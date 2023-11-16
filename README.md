@@ -34,8 +34,21 @@ As NoModulePowershell is a collection of standalone `.ps1` files, there is no ne
   
 Remember to always verify the integrity of the files after download and before use, to ensure they have not been tampered with.
 
+# Documentation
 
+Comprehensive documentation for the NoModulePowershell library is provided to assist users in understanding and utilizing the full capabilities of each script and method included.
 
+All documentation is located within the `docs` directory of the repository. Here you will find detailed explanations, usage examples, and additional notes for every file and method that makes up the library.
+
+To access the documentation, follow these steps:
+
+1. Navigate to the main page of the NoModulePowershell repository on GitHub.
+2. Open the `docs` folder.
+3. Browse through the files to find the documentation relevant to your needs.
+
+The documentation is organized to ensure ease of navigation and to provide quick access to the information you require for effective use of the library. We recommend that all users read the corresponding documents before using the provided scripts to understand better the functions and how they can be tailored to fit individual needs.
+
+For updates and changes to the documentation, please refer to the commit history for the `docs` directory to ensure that you have the latest information.
 
 # Disclaimer
 
