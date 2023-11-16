@@ -15,6 +15,27 @@ The existence of this project is a direct response to the challenges faced withi
 
 It serves as a toolkit that empowers developers by providing a wide array of pre-built methods, enabling them to focus more on scripting logic rather than the intricacies of module installation and configuration. By doing so, it also lowers the barrier to entry for creating basic scripts, given the extensive suite of methods available at their disposal. This approach offers the dual advantage of accelerating development timelines and reducing the need for in-depth knowledge of the underlying systems. As a result, it promotes efficiency and productivity in an environment where such resources are often limited by administrative permissions.
 
+# Installation Guide
+
+To ensure the full functionality of the NoModulePowershell library, it is required that you have PowerShell version 5.1.19041.3693 or a version close to this latest release installed on your system. While the library may function on other versions, development and testing have been primarily conducted within the version range close to 5.1.19041.3693, thus compatibility is best ensured within this range.
+
+## Steps for Installation
+
+The installation of the NoModulePowershell library is straightforward and does not require any complex setup procedures. To install, follow these simple steps:
+
+1. Navigate to the [Releases section](Your-GitHub-Link-to-Releases) on the library's GitHub page.
+2. Download the desired release of the library.
+   
+   Alternatively, you can download the entire repository by clicking the `Code` button and then `Download ZIP`, or by cloning the repository using the following command:
+
+   `git clone https://github.com/DoktorSAS/NoModulePowershell.git`
+   
+As NoModulePowershell is a collection of standalone `.ps1` files, there is no need for executing installation commands or managing dependencies. Simply place the downloaded files into your working directory or script path, and you are ready to use the library's functionalities.
+  
+Remember to always verify the integrity of the files after download and before use, to ensure they have not been tampered with.
+
+
+
 
 # Disclaimer
 
