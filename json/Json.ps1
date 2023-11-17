@@ -71,42 +71,49 @@ function Set-JsonProperty {
 
 <#
 .SYNOPSIS
-Gets the value of a specific property in a JSON object.
+Retrieves the value of a specified property from a JSON object.
 
 .DESCRIPTION
-This function takes a JSON object and a property name. It retrieves and returns the value of the specified property from the JSON object.
+This function searches for a specified property in a JSON object and returns its value.
+If the property is not found directly in the object, it returns a specified default value or $null if no default value is provided.
 
 .PARAMETER jsonObject
-The JSON object from which to get the property value.
+The JSON object from which the property value will be retrieved.
 
 .PARAMETER propertyName
-The name of the property whose value is to be retrieved.
+The name of the property to search for in the JSON object.
+
+.PARAMETER defaultValue
+The default value to return if the property is not found. This parameter is optional.
 
 .EXAMPLE
-$jsonObject = '{"name": "John", "age": 30, "city": "New York"}' | ConvertFrom-Json
-$propertyName = "age"
-$propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName $propertyName
-Write-Host "Value of Property '$propertyName': $propertyValue"
+$jsonObject = ConvertFrom-Json '{ "1": {"name": "John", "age": 30} }'
+$propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age" -defaultValue "Not Found"
+Write-Host $propertyValue
 #>
 
 function Get-JsonProperty {
-    param (
-        [object]$jsonObject,
-        [string]$propertyName
+    param(
+        [Parameter(Mandatory=$true)]
+        [PSCustomObject]
+        $jsonObject,
+
+        [Parameter(Mandatory=$true)]
+        [string]
+        $propertyName,
+
+        [Parameter(Mandatory=$false)]
+        $defaultValue = $null
     )
 
-    # Check if the input is a JSON object
-    if ($jsonObject -isnot [System.Management.Automation.PSCustomObject]) {
-        Write-Host "Error: Input is not a valid JSON object."
-        return $null
+    if ($jsonObject.PSObject.Properties[$propertyName]) {
+        return $jsonObject.PSObject.Properties[$propertyName].Value
+    } else {
+        Write-Error "Property '$propertyName' not found. Please check if the property name is correct."
+        return $defaultValue
     }
-
-    # Get the value of the specified property
-    $propertyValue = $jsonObject.$propertyName
-
-    # Return the property value
-    return $propertyValue
 }
+
 
 <#
 .SYNOPSIS

@@ -52,6 +52,7 @@ Retrieves the value of a specified property from a JSON object. This function is
 |-------------|--------|-----------|---------------------------|
 | jsonObject  | object | Yes       | `ConvertFrom-Json '{"name": "John", "age": 30}'` |
 | propertyName| string | Yes       | 'age'                     |
+| defaultValue| *      | No        | 'undefined'               |
 
 ```
 $propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age"
