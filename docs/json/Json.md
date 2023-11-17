@@ -5,11 +5,12 @@ The `Json.ps1` file in the NoModulePowershell library provides a suite of functi
 ## List of Functions
 
 1. [Test-JsonString](#test-jsonstring)
-2. [Set-JsonProperty](#set-jsonproperty)
-3. [Get-JsonProperty](#get-jsonproperty)
-4. [Add-JsonProperty](#add-jsonproperty)
-5. [Append-JsonProperty](#append-jsonproperty)
-6. [Select-JsonTokens](#select-jsontokens)
+2. [Test-JsonPropertyExists](#test-jsonpropertyexists)
+3. [Set-JsonProperty](#set-jsonproperty)
+4. [Get-JsonProperty](#get-jsonproperty)
+5. [Add-JsonProperty](#add-jsonproperty)
+6. [Append-JsonProperty](#append-jsonproperty)
+7. [Select-JsonTokens](#select-jsontokens)
 
 ---
 
@@ -21,11 +22,31 @@ This function checks if a provided string is a valid JSON object. It's useful fo
 |-------------|--------|-----------|---------------------------|
 | jsonString  | string | Yes       | '{"name": "John", "age": 30}' |
 
-```
+```ps
 $isValid = Test-JsonString -jsonString $jsonString
 ```
 
 If `$isValid` is `true`, the string is a valid JSON object; if `false`, it is not.
+
+---
+
+## Test-JsonPropertyExists
+
+Checks if a specified property exists in a JSON object. This function is useful for validating the presence of a property before attempting operations that depend on its existence.
+
+| Argument     | Type   | Mandatory | Description                                      | Example Value                                    |
+|--------------|--------|-----------|--------------------------------------------------|--------------------------------------------------|
+| jsonObject   | object | Yes       | The JSON object in which to check for the property | `ConvertFrom-Json '{"name": "John", "age": 30}'` |
+| propertyName | string | Yes       | The name of the property to check for in the JSON object | 'age'                                          |
+
+Usage:
+
+```ps
+$jsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
+$propertyName = "age"
+$exists = Test-JsonPropertyExists -jsonObject $jsonObject -propertyName $propertyName
+Write-Host "Property Exists: $exists"
+```
 
 ---
 
@@ -39,7 +60,7 @@ Sets the value of a specified property in a JSON object. This function is useful
 | propertyName| string | Yes       | 'age'                     |
 | newValue    | object | Yes       | 31                        |
 
-```
+```ps
 Set-JsonProperty -jsonObject $jsonObject -propertyName "age" -newValue 31
 ```
 
@@ -55,7 +76,7 @@ Retrieves the value of a specified property from a JSON object. This function is
 | propertyName| string | Yes       | 'age'                     |
 | defaultValue| *      | No        | 'undefined'               |
 
-```
+```ps
 $propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age"
 ```
 
@@ -71,7 +92,7 @@ Adds a new property to a JSON object if it does not already exist. This function
 | propertyName | string | Yes       | 'age'                     |
 | propertyValue| object | Yes       | 30                        |
 
-```
+```ps
 Add-JsonProperty -jsonObject $jsonObject -propertyName "age" -propertyValue 30
 ```
 
@@ -88,7 +109,7 @@ Appends a new property to a JSON object. The new property is added after the las
 
 Usage:
 
-```
+```ps
 $jsonObject = @{ "B" = "ValueB"; "C" = "ValueC" }
 Append-JsonProperty -jsonObject $jsonObject -propertyName "D" -propertyValue "ValueD"
 ```
@@ -104,7 +125,7 @@ Selects specific elements from a JSON object based on a list of tokens. This fun
 | jsonObject | object   | Yes       | `ConvertFrom-Json '{"name": "John", "age": 30, "city": "New York"}'` |
 | tokens     | string[] | Yes       | @('name', 'city')     |
 
-```
+```ps
 $selectedJson = Select-JsonTokens -jsonObject $jsonObject -tokens @("name", "city")
 ```
 

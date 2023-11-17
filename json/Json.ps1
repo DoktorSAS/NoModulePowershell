@@ -31,6 +31,40 @@ function Test-JsonString {
 
 <#
 .SYNOPSIS
+Checks if a specified property exists in a JSON object.
+
+.DESCRIPTION
+This function takes a JSON object and a property name as input and checks if the specified property exists in the JSON object.
+
+.PARAMETER jsonObject
+The JSON object in which to check for the property.
+
+.PARAMETER propertyName
+The name of the property to check for in the JSON object.
+
+.EXAMPLE
+$jsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
+$propertyName = "age"
+$exists = Test-JsonPropertyExists -jsonObject $jsonObject -propertyName $propertyName
+Write-Host "Property Exists: $exists"
+#>
+
+function Test-JsonPropertyExists {
+    param(
+        [Parameter(Mandatory=$true)]
+        [PSCustomObject]
+        $jsonObject,
+
+        [Parameter(Mandatory=$true)]
+        [string]
+        $propertyName
+    )
+
+    return $jsonObject.PSObject.Properties.Name -contains $propertyName
+}
+
+<#
+.SYNOPSIS
 Sets the value of a property in a JSON object.
 
 .DESCRIPTION
