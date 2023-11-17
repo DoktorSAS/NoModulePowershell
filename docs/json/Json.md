@@ -75,6 +75,24 @@ Add-JsonProperty -jsonObject $jsonObject -propertyName "age" -propertyValue 30
 ```
 
 ---
+## Append-JsonProperty
+
+Appends a new property to a JSON object. The new property is added after the last existing property, maintaining the order of the properties. This function is useful for incrementally building up a JSON object.
+
+| Argument     | Type   | Mandatory | Description                                          | Example Value                                    |
+|--------------|--------|-----------|------------------------------------------------------|--------------------------------------------------|
+| jsonObject   | object | Yes       | The JSON object to which the new property will be appended | `ConvertFrom-Json '{"B": "ValueB", "C": "ValueC"}'` |
+| propertyName | string | Yes       | The name of the new property to be appended           | 'D'                                              |
+| propertyValue| *      | Yes       | The value of the new property to be appended         | 'ValueD'                                         |
+
+Usage:
+
+```
+$jsonObject = @{ "B" = "ValueB"; "C" = "ValueC" }
+Append-JsonProperty -jsonObject $jsonObject -propertyName "D" -propertyValue "ValueD"
+```
+
+---
 
 ## Select-JsonTokens
 

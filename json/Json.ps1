@@ -158,12 +158,79 @@ function Add-JsonProperty {
     )
 
     # Check if the property already exists
-    if (-not $jsonObject.$propertyName) {
-        # Add the new property
-        $jsonObject | Add-Member -MemberType NoteProperty -Name $propertyName -Value $propertyValue
+    if ($jsonObject.$propertyName) {
+        Write-Host "Property '$propertyName' already exists."
+        return $null
     }
+
+    # Add the new property
+    $jsonObject | Add-Member -MemberType NoteProperty -Name $propertyName -Value $propertyValue
 }
 
+<#
+.SYNOPSIS
+Appends a new property to a JSON object.
+
+.DESCRIPTION
+This function takes a JSON object and appends a new property to it. The new property is added after the last existing property, maintaining the order of the properties.
+
+.PARAMETER jsonObject
+The JSON object to which the new property will be appended.
+
+.PARAMETER propertyName
+The name of the new property to be appended.
+
+.PARAMETER propertyValue
+The value of the new property to be appended.
+
+.EXAMPLE
+# Append a new property to a JSON object
+$jsonObject = @{ "B" = "ValueB"; "C" = "ValueC"; "D" = "ValueD" }
+Append-JsonProperty -jsonObject $jsonObject -propertyName "A" -propertyValue "ValueA"
+Write-Host "Updated JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
+#>
+
+function Append-JsonProperty {
+    param (
+        [Parameter(Mandatory=$true)]
+        [object]$jsonObject,
+
+        [Parameter(Mandatory=$true)]
+        [string]$propertyName,
+
+        [Parameter(Mandatory=$true)]
+        $propertyValue
+    )
+
+    # Check if the property already exists
+    if ($jsonObject.$propertyName) {
+        Write-Host "Property '$propertyName' already exists."
+        return $null
+    }
+
+    # Append the new property
+    $jsonObject | Add-Member -MemberType NoteProperty -Name $propertyName -Value $propertyValue
+}
+
+<#
+.SYNOPSIS
+Selects specific tokens (properties) from a JSON object and creates a new JSON object containing only those tokens.
+
+.DESCRIPTION
+This function takes a JSON object and an array of token names (property names). It creates a new JSON object that includes only the specified tokens from the original JSON object. If a specified token does not exist in the original object, it will not be included in the new object.
+
+.PARAMETER jsonObject
+The JSON object from which tokens will be selected. This parameter is mandatory.
+
+.PARAMETER tokens
+An array of string token names to be selected from the JSON object. This parameter is mandatory.
+
+.EXAMPLE
+$jsonObject = ConvertFrom-Json '{ "name": "John", "age": 30, "city": "New York"}'
+$tokens = @("name", "city")
+$selectedObject = Select-JsonTokens -jsonObject $jsonObject -tokens $tokens
+Write-Host "Selected JSON Object: $($selectedObject | ConvertTo-Json -Depth 100)"
+#>
 function Select-JsonTokens {
     param (
         [Parameter(Mandatory=$true)]
