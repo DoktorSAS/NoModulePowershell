@@ -1,5 +1,5 @@
 # No Module Powershell
-![Image by OpenAI](https://github.com/DoktorSAS/NoModulePowershell/blob/main/NoModulePowershellBanner.png)
+![Image by OpenAI](NoModulePowershellBanner.png)
 
 
 <div id="header" align="center">
