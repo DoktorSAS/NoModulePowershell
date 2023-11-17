@@ -17,6 +17,7 @@ Write-Host "Is Valid JSON: $isValid"
 
 function Test-JsonString {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$jsonString
     )
 
@@ -54,8 +55,13 @@ Write-Host "Modified JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
 
 function Set-JsonProperty {
     param (
+        [Parameter(Mandatory=$true)]
         [object]$jsonObject,
+
+        [Parameter(Mandatory=$true)]
         [string]$propertyName,
+
+        [Parameter(Mandatory=$true)]
         [object]$newValue
     )
 
@@ -141,8 +147,13 @@ Write-Host "Updated JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
 
 function Add-JsonProperty {
     param (
+        [Parameter(Mandatory=$true)]
         [object]$jsonObject,
+
+        [Parameter(Mandatory=$true)]
         [string]$propertyName,
+
+        [Parameter(Mandatory=$true)]
         $propertyValue
     )
 
@@ -155,7 +166,10 @@ function Add-JsonProperty {
 
 function Select-JsonTokens {
     param (
+        [Parameter(Mandatory=$true)]
         [object]$jsonObject,
+
+        [Parameter(Mandatory=$true)]
         [string[]]$tokens
     )
 
