@@ -91,5 +91,5 @@ $selectedJson = Select-JsonTokens -jsonObject $jsonObject -tokens @("name", "cit
 ---
 
 <p align="right">
-  <a href="NoModulePowershell/blob/main/docs/README.md">← Go Back</a>
+  <a href="/NoModulePowershell/blob/main/docs/README.md">← Go Back</a>
 </p>
