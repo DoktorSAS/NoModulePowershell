@@ -8,7 +8,8 @@ The `Json.ps1` file in the NoModulePowershell library provides a suite of functi
 2. [Set-JsonProperty](#set-jsonproperty)
 3. [Get-JsonProperty](#get-jsonproperty)
 4. [Add-JsonProperty](#add-jsonproperty)
-5. [Select-JsonTokens](#select-jsontokens)
+5. [Append-JsonProperty](#append-jsonproperty)
+6. [Select-JsonTokens](#select-jsontokens)
 
 ---
 
