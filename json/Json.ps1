@@ -293,3 +293,65 @@ function Select-JsonTokens {
     # Return the new JSON object
     return $selectedJson
 }
+
+<#
+.SYNOPSIS
+Finds all instances of a specified property within a JSON object.
+
+.DESCRIPTION
+This function searches through a JSON object and returns all instances (parents) where the specified property is found, including in nested objects.
+
+.PARAMETER jsonObject
+The JSON object in which to search for the property.
+
+.PARAMETER propertyName
+The name of the property to search for in the JSON object.
+
+.EXAMPLE
+$jsonObject = ConvertFrom-Json '{
+    "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} },  
+    "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }
+}'
+$propertyName = "email"
+$instances = Find-JsonPropertyInstances -jsonObject $jsonObject -propertyName $propertyName
+Write-Host "Instances Found: $($instances | ConvertTo-Json -Depth 100)"
+#>
+
+function Find-JsonPropertyInstances {
+    param(
+        [Parameter(Mandatory=$true)]
+        [PSCustomObject]
+        $jsonObject,
+
+        [Parameter(Mandatory=$true)]
+        [string]
+        $propertyName
+    )
+
+    $foundInstances = @()
+
+    function Search-Object {
+        param(
+            [PSCustomObject]
+            $obj,
+            [ref]
+            $found
+        )
+
+        foreach ($property in $obj.PSObject.Properties) {
+            if ($property.Name -eq $propertyName) {
+                $found.Value += $obj
+                break
+            } elseif ($property.Value -is [PSCustomObject]) {
+                Search-Object -obj $property.Value -found $found
+            }
+        }
+    }
+
+    foreach ($key in $jsonObject.PSObject.Properties.Name) {
+        $item = $jsonObject.$key
+        Search-Object -obj $item -found ([ref]$foundInstances)
+    }
+
+    return $foundInstances
+}

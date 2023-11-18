@@ -11,6 +11,7 @@ The `Json.ps1` file in the NoModulePowershell library provides a suite of functi
 5. [Add-JsonProperty](#add-jsonproperty)
 6. [Append-JsonProperty](#append-jsonproperty)
 7. [Select-JsonTokens](#select-jsontokens)
+8. [Find-JsonPropertyInstances](find-jsonpropertyinstances)
 
 ---
 
@@ -129,6 +130,25 @@ Selects specific elements from a JSON object based on a list of tokens. This fun
 $selectedJson = Select-JsonTokens -jsonObject $jsonObject -tokens @("name", "city")
 ```
 
+---
+
+## Find-JsonPropertyInstances
+
+Searches through a JSON object and returns all instances (parents) where the specified property is found, including nested objects. This function is useful for identifying all occurrences of a specific property within a complex JSON structure.
+
+| Argument     | Type   | Mandatory | Description                                      | Example Value                                    |
+|--------------|--------|-----------|--------------------------------------------------|--------------------------------------------------|
+| jsonObject   | object | Yes       | The JSON object in which to search for the property | `ConvertFrom-Json '{ "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} }, "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }'` |
+| propertyName | string | Yes       | The name of the property to search for in the JSON object | 'email'                                          |
+
+Usage:
+
+```ps
+$jsonObject = ConvertFrom-Json '{ "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} }, "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }'
+$propertyName = "email"
+$instances = Find-JsonPropertyInstances -jsonObject $jsonObject -propertyName $propertyName
+Write-Host "Instances Found: $($instances | ConvertTo-Json -Depth 100)"
+```
 ---
 
 <p align="right">
