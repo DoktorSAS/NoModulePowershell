@@ -86,3 +86,69 @@ function Create-ExcelFile {
     Write-Host "Excel file created: $outputFilePath"
     return $outputFilePath
 }
+
+<#
+.SYNOPSIS
+Gets the row count of an Excel file.
+
+.DESCRIPTION
+This function opens an Excel file, selects the appropriate worksheet (assuming it's the first one),
+and calculates the row count by counting non-empty cells in column A.
+Returns -1 in case of any errors (e.g., file not found).
+
+.PARAMETER filePath
+The path to the Excel file.
+
+.PARAMETER notIncludeHeader
+If specified, excludes the header row from the row count.
+
+.EXAMPLE
+# Get the row count of an Excel file
+$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+Write-Host "Number of rows: $rowCount"
+#>
+
+function Get-ExcelRowCount {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$false)]
+        [switch]$notIncludeHeader
+    )
+
+    try {
+        # Create a new Excel application
+        $excel = New-Object -ComObject Excel.Application
+        $excel.Visible = $false
+
+        # Open the Excel file
+        $workbook = $excel.Workbooks.Open($filePath)
+
+        # Select the appropriate worksheet (assuming it's the first one)
+        $worksheet = $workbook.Sheets.Item(1)
+
+        # Find the last used row in column A
+        $lastRow = $worksheet.Cells($worksheet.Rows.Count, 1).End(-4162).Row
+
+        # Exclude the header row if specified
+        if ($notIncludeHeader) {
+            $lastRow--
+        }
+
+        # Close Excel without saving changes
+        $workbook.Close()
+        $excel.Quit()
+    } catch {
+        Write-Host "An error occurred: $_"
+        return -1
+    } finally {
+        if ($excel) {
+            [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+            [System.GC]::Collect()
+            [System.GC]::WaitForPendingFinalizers()
+        }
+    }
+
+    return $lastRow
+}

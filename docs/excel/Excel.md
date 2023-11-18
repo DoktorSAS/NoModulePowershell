@@ -5,6 +5,7 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 ## List of Functions
 
 1. [Create-ExcelFile](#create-excelfile)
+2. [Get-ExcelRowCount](#get-excelrowcount)
 
 ---
 
@@ -36,6 +37,33 @@ To create an empty Excel file with a unique name:
 $filePath = "C:\Path\To\Your"
 $fileName = "MyUniqueExcelFile"
 Create-ExcelFile -filePath $filePath -fileName $fileName -unique
+```
+
+---
+
+## Get-ExcelRowCount
+
+Retrieves the row count of an Excel file. This function opens an Excel file and calculates the row count by counting non-empty cells in column A. In case of any errors (such as the file not being found), it returns -1.
+
+| Argument       | Type   | Mandatory | Description                                     | Example Value                               |
+|----------------|--------|-----------|-------------------------------------------------|---------------------------------------------|
+| filePath       | string | Yes       | The path to the Excel file                      | `'C:\Path\To\Your\Excel\File.xlsx'`         |
+| notIncludeHeader| switch | No        | Excludes the header row from the row count     | `-notIncludeHeader`                         |
+
+Usage:
+
+To get the row count of an Excel file:
+
+```ps
+$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+Write-Host "Number of rows: $rowCount"
+```
+
+To get the row count excluding the header:
+
+```ps
+$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -notIncludeHeader
+Write-Host "Number of rows excluding header: $rowCount"
 ```
 
 
