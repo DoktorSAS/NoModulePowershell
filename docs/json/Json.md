@@ -11,7 +11,7 @@ The `Json.ps1` file in the NoModulePowershell library provides a suite of functi
 5. [Add-JsonProperty](#add-jsonproperty)
 6. [Append-JsonProperty](#append-jsonproperty)
 7. [Select-JsonTokens](#select-jsontokens)
-8. [Find-JsonPropertyInstances](find-jsonpropertyinstances)
+8. [Find-JsonPropertyInstances](#find-jsonpropertyinstances)
 
 ---
 
