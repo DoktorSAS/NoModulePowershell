@@ -10,13 +10,16 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 
 ## Create-ExcelFile
 
-Creates a new Excel file at a specified location with optional headers. If headers are provided, they are set as the first row in the Excel file; otherwise, an empty Excel file is created.
+Creates a new Excel file at a specified location with optional headers and an optional unique filename. If headers are provided, they are set as the first row in the Excel file; otherwise, an empty Excel file is created. If the 'unique' switch is used, the file name will include a date and time to the millisecond to ensure uniqueness.
 
 | Argument | Type     | Mandatory | Description                                                  | Example Value                           |
 |----------|----------|-----------|--------------------------------------------------------------|-----------------------------------------|
 | filePath | string   | Yes       | The path where the Excel file will be saved                  | `'C:\Path\To\Your'`                     |
 | fileName | string   | Yes       | The name of the Excel file (without extension)               | `'MyExcelFile'`                         |
 | headers  | string[] | No        | An array of header names to be included in the Excel file    | `@("Name", "Age", "City")`              |
+| unique   | switch   | No        | If specified, appends a date and time to the file name to ensure it is unique | `-unique`                             |
+
+Usage:
 
 To create an Excel file with headers:
 
@@ -27,13 +30,14 @@ $headers = @("Name", "Age", "City")
 Create-ExcelFile -filePath $filePath -fileName $fileName -headers $headers
 ```
 
-To create an empty Excel file:
+To create an empty Excel file with a unique name:
 
 ```ps
 $filePath = "C:\Path\To\Your"
-$fileName = "MyEmptyExcelFile"
-Create-ExcelFile -filePath $filePath -fileName $fileName
+$fileName = "MyUniqueExcelFile"
+Create-ExcelFile -filePath $filePath -fileName $fileName -unique
 ```
+
 
 ---
 
