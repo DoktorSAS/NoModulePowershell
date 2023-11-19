@@ -167,6 +167,7 @@ foreach ($key in $rowData.Keys) {
 ```
 
 This example retrieves the data from row 3 of the Excel file and prints each cell's header and value.
+
 ---
 
 ## Get-ExcelColumnData
