@@ -8,7 +8,8 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 2. [Get-ExcelRowCount](#get-excelrowcount)
 3. [Get-ExcelColumnCount](#Get-ExcelColumnCount)
 4. [Get-ExcelCellValue](#Get-ExcelCellValue)
-4. [Set-ExcelCellValue](#Set-ExcelCellValue)
+5. [Set-ExcelCellValue](#Set-ExcelCellValue)
+6. [Get-ExcelRowData](#Get-ExcelRowData)
 
 ---
 
@@ -134,9 +135,39 @@ Usage:
 
 To set the value in cell at row 2, column B:
 
-`
+```ps
 Set-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B' -value "New Value"
-`
+```
+
+---
+
+## Get-ExcelRowData
+
+Retrieves the data of a specified row in an Excel file as a hashtable. This function matches the data with headers, either from the first row or the first column, based on the provided switch parameters.
+
+| Argument          | Type   | Mandatory | Description                                                  | Example Value                                      |
+|-------------------|--------|-----------|--------------------------------------------------------------|----------------------------------------------------|
+| filePath          | string | Yes       | The path of the Excel file                                   | `'C:\Path\To\Your\Excel\File.xlsx'`                |
+| rowIndex          | int    | Yes       | The index of the row for which data is to be retrieved       | `3`                                                |
+| matchHeader       | switch | No        | If specified, matches the data with headers in the first row | `-matchHeader`                                     |
+| matchFirstColumn  | switch | No        | If specified, matches the data with headers in the first column | `-matchFirstColumn`                              |
+
+Usage:
+
+To retrieve and print the data from row 3 of the Excel file, matching with headers in the first row:
+
+```ps
+$excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$rowIndex = 3
+$rowData = Get-ExcelRowData -filePath $excelFilePath -rowIndex $rowIndex -matchHeader
+
+foreach ($key in $rowData.Keys) {
+    Write-Host "$key: $($rowData[$key])"
+}
+```
+
+This example retrieves the data from row 3 of the Excel file and prints each cell's header and value.
+
 
 ---
 
