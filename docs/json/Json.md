@@ -23,7 +23,7 @@ This function checks if a provided string is a valid JSON object. It's useful fo
 |-------------|--------|-----------|---------------------------|
 | jsonString  | string | Yes       | '{"name": "John", "age": 30}' |
 
-```ps
+```powershell
 $isValid = Test-JsonString -jsonString $jsonString
 ```
 
@@ -42,7 +42,7 @@ Checks if a specified property exists in a JSON object. This function is useful 
 
 Usage:
 
-```ps
+```powershell
 $jsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
 $propertyName = "age"
 $exists = Test-JsonPropertyExists -jsonObject $jsonObject -propertyName $propertyName
@@ -61,7 +61,7 @@ Sets the value of a specified property in a JSON object. This function is useful
 | propertyName| string | Yes       | 'age'                     |
 | newValue    | object | Yes       | 31                        |
 
-```ps
+```powershell
 Set-JsonProperty -jsonObject $jsonObject -propertyName "age" -newValue 31
 ```
 
@@ -77,7 +77,7 @@ Retrieves the value of a specified property from a JSON object. This function is
 | propertyName| string | Yes       | 'age'                     |
 | defaultValue| *      | No        | 'undefined'               |
 
-```ps
+```powershell
 $propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age"
 ```
 
@@ -93,7 +93,7 @@ Adds a new property to a JSON object if it does not already exist. This function
 | propertyName | string | Yes       | 'age'                     |
 | propertyValue| object | Yes       | 30                        |
 
-```ps
+```powershell
 Add-JsonProperty -jsonObject $jsonObject -propertyName "age" -propertyValue 30
 ```
 
@@ -110,7 +110,7 @@ Appends a new property to a JSON object. The new property is added after the las
 
 Usage:
 
-```ps
+```powershell
 $jsonObject = @{ "B" = "ValueB"; "C" = "ValueC" }
 Append-JsonProperty -jsonObject $jsonObject -propertyName "D" -propertyValue "ValueD"
 ```
@@ -126,7 +126,7 @@ Selects specific elements from a JSON object based on a list of tokens. This fun
 | jsonObject | object   | Yes       | `ConvertFrom-Json '{"name": "John", "age": 30, "city": "New York"}'` |
 | tokens     | string[] | Yes       | @('name', 'city')     |
 
-```ps
+```powershell
 $selectedJson = Select-JsonTokens -jsonObject $jsonObject -tokens @("name", "city")
 ```
 
@@ -143,7 +143,7 @@ Searches through a JSON object and returns all instances (parents) where the spe
 
 Usage:
 
-```ps
+```powershell
 $jsonObject = ConvertFrom-Json '{ "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} }, "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }'
 $propertyName = "email"
 $instances = Find-JsonPropertyInstances -jsonObject $jsonObject -propertyName $propertyName
