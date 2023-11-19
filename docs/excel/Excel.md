@@ -6,6 +6,8 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 
 1. [Create-ExcelFile](#create-excelfile)
 2. [Get-ExcelRowCount](#get-excelrowcount)
+3. [Get-ExcelColumnCount](#Get-ExcelColumnCount)
+4. [Get-ExcelCellValue](#Get-ExcelCellValue)
 
 ---
 
@@ -91,6 +93,27 @@ To get the column count excluding the first column:
 ```ps
 $columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
 Write-Host "Number of columns excluding the first column: $columnCount"
+```
+
+---
+
+## Get-ExcelCellValue
+
+Retrieves the value from a specific cell in an Excel worksheet, identified by row and column indices. The column can be specified using either its alphabetical letter or numerical index. Note that both row and column indices start from 1.
+
+| Argument    | Type   | Mandatory | Description                                                  | Example Value                                      |
+|-------------|--------|-----------|--------------------------------------------------------------|----------------------------------------------------|
+| filePath    | string | Yes       | The path of the Excel file                                   | `'C:\Path\To\Your\Excel\File.xlsx'`                |
+| rowIndex    | int    | Yes       | The index of the row (starting from 1)                       | `2`                                                |
+| columnIndex | object | Yes       | The index (starting from 1) or letter of the column          | `2` or `'B'`                                       |
+
+Usage:
+
+To get the value from cell at row 2, column B:
+
+```ps
+$value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
+Write-Host "Cell value: $value"
 ```
 
 ---

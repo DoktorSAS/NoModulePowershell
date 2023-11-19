@@ -223,3 +223,75 @@ function Get-ExcelColumnCount {
 
     return $lastColumn
 }
+
+<#
+.SYNOPSIS
+Gets the value of a specified cell in an Excel file.
+
+.DESCRIPTION
+This function retrieves the value from a specific cell in an Excel worksheet, 
+identified by row and column. The column can be specified using either its 
+alphabetical letter or numerical index.
+
+.PARAMETER filePath
+The path of the Excel file.
+
+.PARAMETER rowIndex
+The index of the row of the cell.
+
+.PARAMETER columnIndex
+The index or letter of the column of the cell.
+
+.EXAMPLE
+# Get the value from cell at row 2, column B
+$value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
+Write-Host "Cell value: $value"
+#>
+
+function Get-ExcelCellValue {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$true)]
+        [int]$rowIndex,
+
+        [Parameter(Mandatory=$true)]
+        [object]$columnIndex  # Can be either an int or a string
+    )
+
+    # Convert column letter to number if necessary
+    if ($columnIndex -is [string]) {
+        $columnNumber = 0
+        $columnIndex.ToCharArray() | ForEach-Object {
+            $columnNumber = $columnNumber * 26 + ([int][char]$_ - [int][char]'A' + 1)
+        }
+        $columnIndex = $columnNumber
+    }
+
+    try {
+        $excel = New-Object -ComObject Excel.Application
+        $excel.Visible = $false
+        $workbook = $excel.Workbooks.Open($filePath)
+        $worksheet = $workbook.Sheets.Item(1)
+
+        # Retrieve the value
+        $value = $worksheet.Cells.Item($rowIndex, $columnIndex).Value2
+
+        # Close Excel without saving changes
+        $workbook.Close()
+        $excel.Quit()
+    } catch {
+        Write-Host "An error occurred: $_"
+        return $null
+    } finally {
+        if ($excel) {
+            [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+            [System.GC]::Collect()
+            [System.GC]::WaitForPendingFinalizers()
+        }
+    }
+
+    return $value
+}
+
