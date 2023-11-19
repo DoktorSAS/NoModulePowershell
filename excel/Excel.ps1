@@ -375,9 +375,8 @@ function Set-ExcelCellValue {
 Gets the data of a specified row in an Excel file as a hashtable.
 
 .DESCRIPTION
-This function retrieves the data from a specified row in an Excel file. 
-It matches the data with headers, either from the first row or the first column, 
-based on the provided switch parameters.
+This function retrieves the data from a specified row in an Excel file, 
+matching the data with headers in the first row.
 
 .PARAMETER filePath
 The path of the Excel file.
@@ -387,9 +386,6 @@ The index of the row for which data is to be retrieved.
 
 .PARAMETER matchHeader
 If specified, matches the data with headers in the first row.
-
-.PARAMETER matchFirstColumn
-If specified, matches the data with headers in the first column.
 
 .EXAMPLE
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
@@ -412,10 +408,7 @@ function Get-ExcelRowData {
         [int]$rowIndex,
 
         [Parameter(Mandatory=$false)]
-        [switch]$matchHeader,
-
-        [Parameter(Mandatory=$false)]
-        [switch]$matchFirstColumn
+        [switch]$matchHeader
     )
 
     # Create a new Excel application
@@ -428,19 +421,13 @@ function Get-ExcelRowData {
     # Select the appropriate worksheet (assuming it's the first one)
     $worksheet = $workbook.Sheets.Item(1)
 
-    # Determine headers based on switch parameters
+    # Determine headers if matchHeader is specified
     $headers = @()
     if ($matchHeader) {
         $headerRow = 1
         $headerCount = $worksheet.UsedRange.Columns.Count
         for ($i = 1; $i -le $headerCount; $i++) {
             $headers += $worksheet.Cells.Item($headerRow, $i).Text
-        }
-    } elseif ($matchFirstColumn) {
-        $headerColumn = 1
-        $headerCount = $worksheet.UsedRange.Rows.Count
-        for ($i = 1; $i -le $headerCount; $i++) {
-            $headers += $worksheet.Cells.Item($i, $headerColumn).Text
         }
     }
 
@@ -461,4 +448,84 @@ function Get-ExcelRowData {
 
     # Return the hashtable of data for the specified row
     return $rowData
+}
+
+<#
+.SYNOPSIS
+Gets the data of a specified column in an Excel file as a hashtable.
+
+.DESCRIPTION
+This function retrieves the data from a specified column in an Excel file, 
+matching the data with headers in the first column.
+
+.PARAMETER filePath
+The path of the Excel file.
+
+.PARAMETER columnIndex
+The index of the column for which data is to be retrieved.
+
+.PARAMETER matchFirstColumn
+If specified, matches the data with headers in the first column.
+
+.EXAMPLE
+$excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$columnIndex = 2
+$columnData = Get-ExcelColumnData -filePath $excelFilePath -columnIndex $columnIndex -matchFirstColumn
+
+foreach ($key in $columnData.Keys) {
+    Write-Host "$key: $($columnData[$key])"
+}
+
+This example retrieves the data from column 2 of the Excel file and prints each cell's header and value.
+#>
+
+function Get-ExcelColumnData {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$true)]
+        [int]$columnIndex,
+
+        [Parameter(Mandatory=$false)]
+        [switch]$matchFirstColumn
+    )
+
+    # Create a new Excel application
+    $excel = New-Object -ComObject Excel.Application
+    $excel.Visible = $false
+
+    # Open the Excel file
+    $workbook = $excel.Workbooks.Open($filePath)
+    
+    # Select the appropriate worksheet (assuming it's the first one)
+    $worksheet = $workbook.Sheets.Item(1)
+
+    # Determine headers if matchFirstColumn is specified
+    $headers = @()
+    if ($matchFirstColumn) {
+        $headerColumn = 1
+        $headerCount = $worksheet.UsedRange.Rows.Count
+        for ($i = 1; $i -le $headerCount; $i++) {
+            $headers += $worksheet.Cells.Item($i, $headerColumn).Text
+        }
+    }
+
+    # Initialize a hashtable to store column data
+    $columnData = @{}
+
+    # Iterate through each row in the specified column
+    $rowCount = $worksheet.UsedRange.Rows.Count
+    for ($row = 1; $row -le $rowCount; $row++) {
+        $cellValue = $worksheet.Cells.Item($row, $columnIndex).Text
+        $key = if ($headers.Count -ge $row) { $headers[$row - 1] } else { $row - 1 }
+        $columnData[$key] = $cellValue
+    }
+
+    # Close Excel without saving changes
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+
+    # Return the hashtable of data for the specified column
+    return $columnData
 }
