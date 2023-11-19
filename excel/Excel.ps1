@@ -604,3 +604,61 @@ function Set-ExcelRowData {
     $excel.Quit()
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 }
+
+<#
+.SYNOPSIS
+Sets data in a specified column of an Excel file.
+
+.DESCRIPTION
+This function sets values in a specified column of an Excel worksheet, starting from a given row.
+
+.PARAMETER filePath
+The path of the Excel file.
+
+.PARAMETER columnIndex
+The index of the column where data will be set.
+
+.PARAMETER values
+An array of values to be set in the column.
+
+.PARAMETER startRowIndex
+The index of the row from which to start setting the values. If not specified, starts from the first row.
+
+.EXAMPLE
+$filePath = "C:\Path\To\Your\Excel\File.xlsx"
+$columnIndex = 2
+$values = @("Data1", "Data2", "Data3")
+Set-ExcelColumnData -filePath $filePath -columnIndex $columnIndex -values $values -startRowIndex 1
+#>
+
+function Set-ExcelColumnData {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$true)]
+        [int]$columnIndex,
+
+        [Parameter(Mandatory=$true)]
+        [object[]]$values,
+
+        [Parameter(Mandatory=$false)]
+        [int]$startRowIndex = 1
+    )
+
+    $excel = New-Object -ComObject Excel.Application
+    $excel.Visible = $false
+    $workbook = $excel.Workbooks.Open($filePath)
+    $worksheet = $workbook.Sheets.Item(1)
+
+    # Set the values in the column
+    for ($i = 0; $i -lt $values.Length; $i++) {
+        $worksheet.Cells.Item($startRowIndex + $i, $columnIndex).Value2 = $values[$i]
+    }
+
+    # Save and close the workbook
+    $workbook.Save()
+    $workbook.Close()
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+}

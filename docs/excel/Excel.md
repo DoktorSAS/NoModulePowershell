@@ -12,6 +12,7 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 6. [Get-ExcelRowData](#Get-ExcelRowData)
 7. [Get-ExcelColumnData](#Get-ExcelColumnData)
 8. [Set-ExcelRowData](#Set-ExcelRowData)
+9. [Set-ExcelColumnData](#Set-ExcelColumnData)
 
 ---
 
@@ -219,6 +220,30 @@ $filePath = "C:\Path\To\Your\Excel\File.xlsx"
 $rowIndex = 3
 $values = @("Data1", "Data2", "Data3")
 Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
+```
+
+---
+
+## Set-ExcelColumnData
+
+Sets data in a specified column of an Excel file. This function allows values to be set in a column, starting from a specified row. The column is specified using its numerical index.
+
+| Argument        | Type     | Mandatory | Description                                                    | Example Value                                      |
+|-----------------|----------|-----------|----------------------------------------------------------------|----------------------------------------------------|
+| filePath        | string   | Yes       | The path of the Excel file                                     | `'C:\Path\To\Your\Excel\File.xlsx'`                |
+| columnIndex     | int      | Yes       | The index of the column where data will be set                 | `2`                                                |
+| values          | object[] | Yes       | An array of values to be set in the column                     | `@("Data1", "Data2", "Data3")`                     |
+| startRowIndex   | int      | No        | The index of the row from which to start setting the values. Defaults to the first row if not specified | `1` |
+
+Usage:
+
+To set data in column 2 of the Excel file, starting from row 1:
+
+```powershell
+$filePath = "C:\Path\To\Your\Excel\File.xlsx"
+$columnIndex = 2
+$values = @("Data1", "Data2", "Data3")
+Set-ExcelColumnData -filePath $filePath -columnIndex $columnIndex -values $values -startRowIndex 1
 ```
 
 
