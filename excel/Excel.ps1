@@ -529,3 +529,78 @@ function Get-ExcelColumnData {
     # Return the hashtable of data for the specified column
     return $columnData
 }
+
+<#
+.SYNOPSIS
+Sets data in a specified row of an Excel file.
+
+.DESCRIPTION
+This function sets values in a specified row of an Excel worksheet, starting from a given column (specified either as a number or a letter) or the first empty column if not specified.
+
+.PARAMETER filePath
+The path of the Excel file.
+
+.PARAMETER rowIndex
+The index of the row where data will be set.
+
+.PARAMETER values
+An array of values to be set in the row.
+
+.PARAMETER startColumnIndex
+The index (number or letter) of the column from which to start setting the values. If not specified, starts from the first empty column.
+
+.EXAMPLE
+$filePath = "C:\Path\To\Your\Excel\File.xlsx"
+$rowIndex = 3
+$values = @("Data1", "Data2", "Data3")
+Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
+#>
+
+function Set-ExcelRowData {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$true)]
+        [int]$rowIndex,
+
+        [Parameter(Mandatory=$true)]
+        [object[]]$values,
+
+        [Parameter(Mandatory=$false)]
+        [object]$startColumnIndex
+    )
+
+    $excel = New-Object -ComObject Excel.Application
+    $excel.Visible = $false
+    $workbook = $excel.Workbooks.Open($filePath)
+    $worksheet = $workbook.Sheets.Item(1)
+
+    # Convert column letter to number if necessary
+    if ($startColumnIndex -is [string]) {
+        $colNumber = 0
+        $startColumnIndex.ToCharArray() | ForEach-Object {
+            $colNumber = $colNumber * 26 + ([int][char]$_ - [int][char]'A' + 1)
+        }
+        $startColumnIndex = $colNumber
+    }
+
+    # Find the first empty column if startColumnIndex is not specified
+    if (-not $startColumnIndex) {
+        $startColumnIndex = 1
+        while ($worksheet.Cells.Item($rowIndex, $startColumnIndex).Value2 -ne $null) {
+            $startColumnIndex++
+        }
+    }
+
+    # Set the values in the row
+    for ($i = 0; $i -lt $values.Length; $i++) {
+        $worksheet.Cells.Item($rowIndex, $startColumnIndex + $i).Value2 = $values[$i]
+    }
+
+    # Save and close the workbook
+    $workbook.Save()
+    $workbook.Close()
+    $excel.Quit()
+    [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+}

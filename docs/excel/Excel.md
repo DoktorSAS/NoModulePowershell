@@ -11,6 +11,7 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 5. [Set-ExcelCellValue](#Set-ExcelCellValue)
 6. [Get-ExcelRowData](#Get-ExcelRowData)
 7. [Get-ExcelColumnData](#Get-ExcelColumnData)
+8. [Set-ExcelRowData](#Set-ExcelRowData)
 
 ---
 
@@ -29,7 +30,7 @@ Usage:
 
 To create an Excel file with headers:
 
-```ps
+```powershell
 $filePath = "C:\Path\To\Your"
 $fileName = "MyExcelFile"
 $headers = @("Name", "Age", "City")
@@ -38,7 +39,7 @@ Create-ExcelFile -filePath $filePath -fileName $fileName -headers $headers
 
 To create an empty Excel file with a unique name:
 
-```ps
+```powershell
 $filePath = "C:\Path\To\Your"
 $fileName = "MyUniqueExcelFile"
 Create-ExcelFile -filePath $filePath -fileName $fileName -unique
@@ -59,14 +60,14 @@ Usage:
 
 To get the row count of an Excel file:
 
-```ps
+```powershell
 $rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of rows: $rowCount"
 ```
 
 To get the row count excluding the header:
 
-```ps
+```powershell
 $rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -notIncludeHeader
 Write-Host "Number of rows excluding header: $rowCount"
 ```
@@ -86,14 +87,14 @@ Usage:
 
 To get the column count of an Excel file:
 
-```ps
+```powershell
 $columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of columns: $columnCount"
 ```
 
 To get the column count excluding the first column:
 
-```ps
+```powershell
 $columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
 Write-Host "Number of columns excluding the first column: $columnCount"
 ```
@@ -114,7 +115,7 @@ Usage:
 
 To get the value from cell at row 2, column B:
 
-```ps
+```powershell
 $value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
 Write-Host "Cell value: $value"
 ```
@@ -136,7 +137,7 @@ Usage:
 
 To set the value in cell at row 2, column B:
 
-```ps
+```powershell
 Set-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B' -value "New Value"
 ```
 
@@ -156,7 +157,7 @@ Usage:
 
 To retrieve and print the data from row 3 of the Excel file, matching with headers in the first row:
 
-```ps
+```powershell
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
 $rowIndex = 3
 $rowData = Get-ExcelRowData -filePath $excelFilePath -rowIndex $rowIndex -matchHeader
@@ -184,7 +185,7 @@ Usage:
 
 To retrieve and print the data from column 2 of the Excel file, matching with headers in the first column:
 
-```ps
+```powershell
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
 $columnIndex = 2
 $columnData = Get-ExcelColumnData -filePath $excelFilePath -columnIndex $columnIndex -matchFirstColumn
@@ -195,6 +196,31 @@ foreach ($key in $columnData.Keys) {
 ```
 
 This example retrieves the data from column 2 of the Excel file and prints each cell's header and value.
+
+---
+
+## Set-ExcelRowData
+
+Sets data in a specified row of an Excel file. This function allows values to be set in a row, starting from a specified column, which can be given either as a numerical index or as a letter. If the starting column is not specified, the function begins from the first empty column in the row.
+
+| Argument         | Type     | Mandatory | Description                                                  | Example Value                                      |
+|------------------|----------|-----------|--------------------------------------------------------------|----------------------------------------------------|
+| filePath         | string   | Yes       | The path of the Excel file                                   | `'C:\Path\To\Your\Excel\File.xlsx'`                |
+| rowIndex         | int      | Yes       | The index of the row where data will be set                  | `3`                                                |
+| values           | object[] | Yes       | An array of values to be set in the row                      | `@("Data1", "Data2", "Data3")`                     |
+| startColumnIndex | object   | No        | The index or letter of the starting column. If not specified, starts from the first empty column | `2` or `'B'`                                       |
+
+Usage:
+
+To set data in row 3 of the Excel file, starting from column B:
+
+```powershell
+$filePath = "C:\Path\To\Your\Excel\File.xlsx"
+$rowIndex = 3
+$values = @("Data1", "Data2", "Data3")
+Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
+```
+
 
 ---
 
