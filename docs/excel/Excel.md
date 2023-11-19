@@ -8,6 +8,7 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 2. [Get-ExcelRowCount](#get-excelrowcount)
 3. [Get-ExcelColumnCount](#Get-ExcelColumnCount)
 4. [Get-ExcelCellValue](#Get-ExcelCellValue)
+4. [Set-ExcelCellValue](#Set-ExcelCellValue)
 
 ---
 
@@ -115,6 +116,27 @@ To get the value from cell at row 2, column B:
 $value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
 Write-Host "Cell value: $value"
 ```
+
+---
+
+## Set-ExcelCellValue
+
+Sets the value of a specified cell in an Excel worksheet. The function allows specifying the cell by row and column, where the column can be indicated using either its alphabetical letter or numerical index. It's important to note that both row and column indices start from 1.
+
+| Argument    | Type   | Mandatory | Description                                                  | Example Value                                      |
+|-------------|--------|-----------|--------------------------------------------------------------|----------------------------------------------------|
+| filePath    | string | Yes       | The path of the Excel file                                   | `'C:\Path\To\Your\Excel\File.xlsx'`                |
+| rowIndex    | int    | Yes       | The index of the row (starting from 1)                       | `2`                                                |
+| columnIndex | object | Yes       | The index (starting from 1) or letter of the column          | `2` or `'B'`                                       |
+| value       | object | Yes       | The value to set in the specified cell                       | `"New Value"`                                      |
+
+Usage:
+
+To set the value in cell at row 2, column B:
+
+`
+Set-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B' -value "New Value"
+`
 
 ---
 
