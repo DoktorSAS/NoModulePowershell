@@ -66,6 +66,32 @@ $rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -notIn
 Write-Host "Number of rows excluding header: $rowCount"
 ```
 
+---
+
+## Get-ExcelColumnCount
+
+Calculates the number of columns in the first row of an Excel file. This function is useful for determining the column span of data within a worksheet. Optionally, it can exclude the first column from the count if it is used as a header or key column.
+
+| Argument        | Type   | Mandatory | Description                                                  | Example Value                             |
+|-----------------|--------|-----------|--------------------------------------------------------------|-------------------------------------------|
+| filePath        | string | Yes       | The path to the Excel file                                    | `'C:\Path\To\Your\Excel\File.xlsx'`       |
+| omitFirstColumn | switch | No        | Excludes the first column from the column count              | `-omitFirstColumn`                        |
+
+Usage:
+
+To get the column count of an Excel file:
+
+```ps
+$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+Write-Host "Number of columns: $columnCount"
+```
+
+To get the column count excluding the first column:
+
+```ps
+$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
+Write-Host "Number of columns excluding the first column: $columnCount"
+```
 
 ---
 

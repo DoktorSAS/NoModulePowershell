@@ -152,3 +152,74 @@ function Get-ExcelRowCount {
 
     return $lastRow
 }
+
+<#
+.SYNOPSIS
+Gets the column count of an Excel file.
+
+.DESCRIPTION
+This function opens an Excel file, selects the appropriate worksheet (assuming it's the first one),
+and calculates the column count by counting non-empty cells in the first row.
+Can optionally exclude the first column from the count.
+
+.PARAMETER filePath
+The path to the Excel file.
+
+.PARAMETER omitFirstColumn
+If specified, excludes the first column from the column count.
+
+.EXAMPLE
+# Get the column count of an Excel file
+$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+Write-Host "Number of columns: $columnCount"
+
+.EXAMPLE
+# Get the column count of an Excel file, excluding the first column
+$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
+Write-Host "Number of columns excluding the first column: $columnCount"
+#>
+
+function Get-ExcelColumnCount {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$false)]
+        [switch]$omitFirstColumn
+    )
+
+    try {
+        # Create a new Excel application
+        $excel = New-Object -ComObject Excel.Application
+        $excel.Visible = $false
+
+        # Open the Excel file
+        $workbook = $excel.Workbooks.Open($filePath)
+
+        # Select the appropriate worksheet (assuming it's the first one)
+        $worksheet = $workbook.Sheets.Item(1)
+
+        # Find the last used column in the first row
+        $lastColumn = $worksheet.Cells.Item(1, $worksheet.Columns.Count).End(-4159).Column
+
+        # Exclude the first column if specified
+        if ($omitFirstColumn) {
+            $lastColumn--
+        }
+
+        # Close Excel without saving changes
+        $workbook.Close()
+        $excel.Quit()
+    } catch {
+        Write-Host "An error occurred: $_"
+        return -1
+    } finally {
+        if ($excel) {
+            [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
+            [System.GC]::Collect()
+            [System.GC]::WaitForPendingFinalizers()
+        }
+    }
+
+    return $lastColumn
+}
