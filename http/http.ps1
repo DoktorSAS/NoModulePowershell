@@ -133,3 +133,43 @@ function Invoke-HttpPutRequest {
         return $null
     }
 }
+
+<#
+.SYNOPSIS
+Sends a HTTP DELETE request to a specified URL.
+
+.DESCRIPTION
+This function sends a HTTP DELETE request to the specified URL. 
+It is useful for deleting resources or data on APIs or web services.
+
+.PARAMETER Url
+The URL to which the DELETE request will be sent.
+
+.PARAMETER Headers
+Optional headers for the DELETE request.
+
+.EXAMPLE
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1"
+
+.EXAMPLE
+$headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $headers
+#>
+
+function Invoke-HttpDeleteRequest {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$Url,
+
+        [Parameter(Mandatory=$false)]
+        [hashtable]$Headers
+    )
+
+    try {
+        $response = Invoke-WebRequest -Uri $Url -Method Delete -Headers $Headers
+        return $response
+    } catch {
+        Write-Error "An error occurred: $_"
+        return $null
+    }
+}

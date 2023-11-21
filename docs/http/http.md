@@ -7,7 +7,7 @@ The `http.ps1` file in the NoModulePowershell library presents a comprehensive c
 1. [Invoke-HttpGetRequest](#invoke-httpgetrequest)
 2. [Invoke-HttpPostRequest](#invoke-httppostrequest)
 3. [Invoke-HttpPutRequest](#invoke-httpputrequest)
-4. (todo) [Invoke-HttpDeleteRequest](#invoke-httpdeleterequest)
+4. [Invoke-HttpDeleteRequest](#invoke-httpdeleterequest)
 5. (todo) [Invoke-HttpPatchRequest](#invoke-httppatchrequest)
 6. (todo) [Test-HttpConnection](#test-httpconnection)
 7. (todo) [ConvertTo-HttpQueryParameters](#convertto-httpqueryparameters)
@@ -95,6 +95,32 @@ To send a PUT request with JSON data and custom headers:
 $headers = @{ "Content-Type" = "application/json" }
 $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
 $response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+```
+
+---
+
+## Invoke-HttpDeleteRequest
+
+Sends a HTTP DELETE request to a specified URL. This function is used for deleting resources or data on APIs or web services.
+
+| Argument | Type      | Mandatory | Description                                   | Example Value                                 |
+|----------|-----------|-----------|-----------------------------------------------|-----------------------------------------------|
+| Url      | string    | Yes       | The URL to which the DELETE request will be sent | `'http://example.com/api/users/1'`           |
+| Headers  | hashtable | No        | Optional headers for the DELETE request      | `@{ "Authorization" = "Bearer your_token" }` |
+
+Usage:
+
+To send a simple DELETE request:
+
+```powershell
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1"
+```
+
+To send a DELETE request with custom headers:
+
+```powershell
+$headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $headers
 ```
 
 
