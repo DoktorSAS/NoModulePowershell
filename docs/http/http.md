@@ -140,7 +140,6 @@ Usage:
 To send a PATCH request with JSON data:
 
 ```powershell
-```
 $data = @{email="john_updated@example.com"} | ConvertTo-Json
 $response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data
 ```
