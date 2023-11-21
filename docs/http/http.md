@@ -4,14 +4,99 @@ The `http.ps1` file in the NoModulePowershell library presents a comprehensive c
 
 ## List of Functions
 
-1. (todo) [Invoke-HttpGetRequest](#invoke-httpgetrequest)
-2. (todo) [Invoke-HttpPostRequest](#invoke-httppostrequest)
-3. (todo) [Invoke-HttpPutRequest](#invoke-httpputrequest)
+1. [Invoke-HttpGetRequest](#invoke-httpgetrequest)
+2. [Invoke-HttpPostRequest](#invoke-httppostrequest)
+3. [Invoke-HttpPutRequest](#invoke-httpputrequest)
 4. (todo) [Invoke-HttpDeleteRequest](#invoke-httpdeleterequest)
 5. (todo) [Invoke-HttpPatchRequest](#invoke-httppatchrequest)
 6. (todo) [Test-HttpConnection](#test-httpconnection)
 7. (todo) [ConvertTo-HttpQueryParameters](#convertto-httpqueryparameters)
 8. (todo) [Receive-HttpResponseStream](#receive-httpresponsestream)
+
+---
+
+## Invoke-HttpGetRequest
+
+Sends a HTTP GET request to a specified URL. This function is used to retrieve data from APIs or web services by making GET requests.
+
+| Argument | Type     | Mandatory | Description                                   | Example Value                           |
+|----------|----------|-----------|-----------------------------------------------|-----------------------------------------|
+| Url      | string   | Yes       | The URL to which the GET request will be sent | `'http://example.com/api/data'`         |
+| Headers  | hashtable| No        | Optional headers for the GET request          | `@{ "Authorization" = "Bearer your_token" }` |
+
+Usage:
+
+To send a simple GET request:
+
+```powershell
+$response = Invoke-HttpGetRequest -Url "http://example.com/api/data"
+```
+
+To send a GET request with custom headers:
+
+```powershell
+$headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpGetRequest -Url "http://example.com/api/data" -Headers $headers
+```
+
+---
+
+## Invoke-HttpPostRequest
+
+Sends a HTTP POST request to a specified URL. This function is used for submitting data to APIs or web services in a specific format.
+
+| Argument | Type      | Mandatory | Description                                  | Example Value                                          |
+|----------|-----------|-----------|----------------------------------------------|--------------------------------------------------------|
+| Url      | string    | Yes       | The URL to which the POST request will be sent | `'http://example.com/api/users'`                      |
+| Body     | string    | Yes       | The string data to be sent in the POST request | `'{"name":"John", "email":"john@example.com"}'`       |
+| Headers  | hashtable | No        | Optional headers for the POST request       | `@{ "Content-Type" = "application/json" }`             |
+
+Usage:
+
+To send a POST request with JSON data:
+
+```powershell
+$data = @{name="John"; email="john@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data
+```
+
+To send a POST request with JSON data and custom headers:
+
+```powershell
+$headers = @{ "Content-Type" = "application/json" }
+$data = @{name="John"; email="john@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data -Headers $headers
+```
+
+---
+
+## Invoke-HttpPutRequest
+
+Sends a HTTP PUT request to a specified URL. This function is used for updating resources or data on APIs or web services.
+
+| Argument | Type      | Mandatory | Description                                  | Example Value                                          |
+|----------|-----------|-----------|----------------------------------------------|--------------------------------------------------------|
+| Url      | string    | Yes       | The URL to which the PUT request will be sent | `'http://example.com/api/users/1'`                     |
+| Body     | string    | Yes       | The string data to be sent in the PUT request | `'{"name":"John", "email":"john@example.com"}'`        |
+| Headers  | hashtable | No        | Optional headers for the PUT request         | `@{ "Content-Type" = "application/json" }`             |
+
+Usage:
+
+To send a PUT request with JSON data:
+
+```powershell
+$data = @{name="John"; email="john@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data
+```
+
+To send a PUT request with JSON data and custom headers:
+
+```powershell
+$headers = @{ "Content-Type" = "application/json" }
+$data = @{name="John"; email="john@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+```
+
 
 ---
 
