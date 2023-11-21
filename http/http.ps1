@@ -173,3 +173,51 @@ function Invoke-HttpDeleteRequest {
         return $null
     }
 }
+
+<#
+.SYNOPSIS
+Sends a HTTP PATCH request to a specified URL.
+
+.DESCRIPTION
+This function sends a HTTP PATCH request to the specified URL with the provided data.
+It is useful for applying partial updates to resources on APIs or web services.
+
+.PARAMETER Url
+The URL to which the PATCH request will be sent.
+
+.PARAMETER Body
+The string data to be sent in the PATCH request.
+
+.PARAMETER Headers
+Optional headers for the PATCH request.
+
+.EXAMPLE
+$data = @{email="john_updated@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data
+
+.EXAMPLE
+$headers = @{ "Content-Type" = "application/json" }
+$data = @{email="john_updated@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+#>
+
+function Invoke-HttpPatchRequest {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$Url,
+
+        [Parameter(Mandatory=$true)]
+        [string]$Body,
+
+        [Parameter(Mandatory=$false)]
+        [hashtable]$Headers
+    )
+
+    try {
+        $response = Invoke-WebRequest -Uri $Url -Method Patch -ContentType "application/json" -Body $Body -Headers $Headers
+        return $response
+    } catch {
+        Write-Error "An error occurred: $_"
+        return $null
+    }
+}

@@ -8,7 +8,7 @@ The `http.ps1` file in the NoModulePowershell library presents a comprehensive c
 2. [Invoke-HttpPostRequest](#invoke-httppostrequest)
 3. [Invoke-HttpPutRequest](#invoke-httpputrequest)
 4. [Invoke-HttpDeleteRequest](#invoke-httpdeleterequest)
-5. (todo) [Invoke-HttpPatchRequest](#invoke-httppatchrequest)
+5. [Invoke-HttpPatchRequest](#invoke-httppatchrequest)
 6. (todo) [Test-HttpConnection](#test-httpconnection)
 7. (todo) [ConvertTo-HttpQueryParameters](#convertto-httpqueryparameters)
 8. (todo) [Receive-HttpResponseStream](#receive-httpresponsestream)
@@ -121,6 +121,36 @@ To send a DELETE request with custom headers:
 ```powershell
 $headers = @{ "Authorization" = "Bearer your_token" }
 $response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $headers
+```
+
+---
+
+## Invoke-HttpPatchRequest
+
+Sends a HTTP PATCH request to a specified URL. This function is used for applying partial updates to resources on APIs or web services.
+
+| Argument | Type      | Mandatory | Description                                  | Example Value                                          |
+|----------|-----------|-----------|----------------------------------------------|--------------------------------------------------------|
+| Url      | string    | Yes       | The URL to which the PATCH request will be sent | `'http://example.com/api/users/1'`                     |
+| Body     | string    | Yes       | The string data to be sent in the PATCH request | `'{"email":"john_updated@example.com"}'`               |
+| Headers  | hashtable | No        | Optional headers for the PATCH request       | `@{ "Content-Type" = "application/json" }`             |
+
+Usage:
+
+To send a PATCH request with JSON data:
+
+```powershell
+```
+$data = @{email="john_updated@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data
+```
+
+To send a PATCH request with JSON data and custom headers:
+
+```powershell
+$headers = @{ "Content-Type" = "application/json" }
+$data = @{email="john_updated@example.com"} | ConvertTo-Json
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
 ```
 
 
