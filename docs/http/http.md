@@ -9,9 +9,6 @@ The `http.ps1` file in the NoModulePowershell library presents a comprehensive c
 3. [Invoke-HttpPutRequest](#invoke-httpputrequest)
 4. [Invoke-HttpDeleteRequest](#invoke-httpdeleterequest)
 5. [Invoke-HttpPatchRequest](#invoke-httppatchrequest)
-6. (todo) [Test-HttpConnection](#test-httpconnection)
-7. (todo) [ConvertTo-HttpQueryParameters](#convertto-httpqueryparameters)
-8. (todo) [Receive-HttpResponseStream](#receive-httpresponsestream)
 
 ---
 
