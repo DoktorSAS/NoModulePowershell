@@ -1,6 +1,6 @@
 # XML.ps1 Function Documentation
 
-
+The `xml.ps1`` file in the NoModulePowershell library is a robust and versatile toolkit designed to streamline the handling of XML data within PowerShell environments. This file comprises a comprehensive set of functions specifically aimed at simplifying the complexities associated with XML file manipulation, parsing, and data conversion.
 
 
 ## List of Functions
@@ -21,3 +21,12 @@
 <p align="right">
   <a href="/docs/README.md">← Go Back</a>
 </p>
+
+curl 'https://github.githubassets.com/assets/vendors-node_modules_github_catalyst_lib_index_js-node_modules_github_hydro-analytics-client_-978abc0-15861e0630b6.js' \
+  -H 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
+  -H 'Referer: https://github.com/' \
+  -H 'Origin: https://github.com' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua-platform: "Windows"' \
+  --compressed
