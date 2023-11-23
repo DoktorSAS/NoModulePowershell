@@ -6,16 +6,17 @@ The documentation is organized by files and folders. Each file within a folder h
 
 ---
 
-```
-├───Json
-│   ├───Json.ps1
-│   
-├───Excel  
-|   ├───Excel.ps1
-│
-├
+# Folders & Files
 
-```
+- [/json](/json)
+    - [/json/Json.ps1](/excel/Json.ps1)
+- [/excel](/excel)
+    - [/excel/Excel.ps1](/excel/Excel.ps1)
+- [/http](/http)
+    - [/http/http.ps1](/http/http.ps1)
+- [/html](/html)
+    - [/html/HtmlParser.ps1](/html/HtmlParser.ps1)
+
 
 ---
 
