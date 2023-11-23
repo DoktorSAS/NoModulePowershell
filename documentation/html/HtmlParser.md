@@ -1,5 +1,6 @@
-# http.ps1 Function Documentation
+# HtmlParser.ps1 Function Documentation
 
+The `HtmlParser.ps1` file in the NoModulePowershell library is a versatile and comprehensive tool for parsing and extracting information from HTML content in PowerShell. This collection of functions is specifically designed to navigate and interpret the complexities of HTML, making it easier to access, manipulate, and retrieve desired data from HTML strings.
 
 ## List of Functions
 
