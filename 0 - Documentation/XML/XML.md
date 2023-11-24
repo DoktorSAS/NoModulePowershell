@@ -19,6 +19,28 @@ The `xml.ps1` file in the NoModulePowershell library is a robust and versatile t
 
 ---
 
+## Create-XmlDocument
+
+Creates a new XML document with a specified root element. Optional attributes and content for the root element can also be added.
+
+| Argument   | Type     | Mandatory | Description                                         | Example Value                                        |
+|------------|----------|-----------|-----------------------------------------------------|------------------------------------------------------|
+| RootElement| string   | Yes       | The name of the root element in the XML document    | `'books'`                                            |
+| Attributes | hashtable| No        | Optional hashtable of attributes for the root element | `@{ "version" = "1.0"; "encoding" = "UTF-8" }`      |
+| Content    | string   | No        | Optional content to add within the root element     | `'This is some sample content'`                      |
+
+Usage:
+
+To create a new XML document with a root element and optional attributes, and then print the resulting XML:
+
+```powershell
+$attributes = @{ "version" = "1.0"; "encoding" = "UTF-8" }
+$doc = Create-XmlDocument -RootElement "books" -Attributes $attributes
+Write-Output $doc.OuterXml
+```
+
+---
+
 <p align="right">
   <a href="/docs/README.md">← Go Back</a>
 </p>
