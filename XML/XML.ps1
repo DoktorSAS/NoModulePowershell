@@ -17,7 +17,7 @@ Optional content to add within the root element.
 .EXAMPLE
 $attributes = @{ "version" = "1.0"; "encoding" = "UTF-8" }
 $doc = Create-XmlDocument -RootElement "books" -Attributes $attributes
-Write-Output $doc.OuterXml
+$doc.OuterXml
 #>
 
 function Create-XmlDocument {
