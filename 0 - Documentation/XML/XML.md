@@ -8,6 +8,7 @@ The `xml.ps1` file in the NoModulePowershell library is a robust and versatile t
 1. [Test-XMLString](#Test-XMLString) 
 2. [Create-XmlDocument](#Create-XmlDocument) 
 3. [Get-XmlElement](#Get-XmlElement)
+3. [Set-XmlElement](#Set-XmlElement)
 4. [Add-XmlElement](#Add-XmlElement)
 5. [Update-XmlElement](#Update-XmlElement)
 5. [Remove-XmlElement](#Remove-XmlElement)
@@ -107,6 +108,33 @@ foreach ($desc in $magazineDesc) {
     "[MAGAZINE] Description: $($desc.InnerText)"
 }
 ```
+
+---
+
+## Set-XmlElement
+
+Sets or updates the value of an XML element using an XPath expression.
+
+| Argument  | Type   | Mandatory | Description                             | Example Value                          |
+|-----------|--------|-----------|-----------------------------------------|----------------------------------------|
+| XmlContent| xml    | Yes       | The XML content to be modified          | `'<books><book>...</book></books>'`    |
+| XPath     | string | Yes       | The XPath expression to locate the element | `'/books/book/title'`                  |
+| NewValue  | string | Yes       | The new value to set for the XML element | `'New Title'`                          |
+
+Usage:
+
+To set or update the value of an XML element:
+
+```powershell
+$xml = [xml]@"
+<books>
+  <book><title>Old Title</title></book>
+</books>
+"@
+Set-XmlElement -XmlContent $xml -XPath '/books/book/title' -NewValue 'New Title'
+$xml.OuterXml
+```
+
 
 
 ---

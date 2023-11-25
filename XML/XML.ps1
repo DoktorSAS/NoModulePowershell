@@ -144,4 +144,53 @@ function Get-XmlElement {
     } catch {
         Write-Error "An error occurred: $_"
         return $null
-    
+    }
+}
+
+<#
+.SYNOPSIS
+Sets or updates the value of an XML element.
+
+.DESCRIPTION
+This function sets or updates the value of a specified XML element using an XPath expression.
+
+.PARAMETER XmlContent
+The XML content to be modified.
+
+.PARAMETER XPath
+The XPath expression to locate the element.
+
+.PARAMETER NewValue
+The new value to set for the specified XML element.
+
+.EXAMPLE
+$xml = [xml]@"
+<books>
+  <book><title>Old Title</title></book>
+</books>
+"@
+Set-XmlElement -XmlContent $xml -XPath '/books/book/title' -NewValue 'New Title'
+$xml.OuterXml
+#>
+
+function Set-XmlElement {
+    param (
+        [Parameter(Mandatory=$true)]
+        [xml]$XmlContent,
+
+        [Parameter(Mandatory=$true)]
+        [string]$XPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$NewValue
+    )
+
+    $node = $XmlContent.SelectSingleNode($XPath)
+    if ($node -ne $null) {
+        $node.InnerText = $NewValue
+        return $XmlContent
+    } else {
+        Write-Error "Element not found with the XPath: $XPath"
+        return $null
+    }
+}
