@@ -5,10 +5,11 @@ The `xml.ps1` file in the NoModulePowershell library is a robust and versatile t
 
 ## List of Functions
 
-1. [Create-XmlDocument](#Create-XmlDocument) 
-2. [Get-XmlElement](#Get-XmlElement)
-3. [Add-XmlElement](#Add-XmlElement)
-4. [Update-XmlElement](#Update-XmlElement)
+1. [Test-XMLString](#Test-XMLString) 
+2. [Create-XmlDocument](#Create-XmlDocument) 
+3. [Get-XmlElement](#Get-XmlElement)
+4. [Add-XmlElement](#Add-XmlElement)
+5. [Update-XmlElement](#Update-XmlElement)
 5. [Remove-XmlElement](#Remove-XmlElement)
 6. [Merge-XmlDocuments](#Merge-XmlDocuments)
 7. [Convert-XmlToJson](#Convert-XmlToJson)
@@ -16,6 +17,30 @@ The `xml.ps1` file in the NoModulePowershell library is a robust and versatile t
 9. [Validate-XmlAgainstXsd](#Validate-XmlAgainstXsd)
 10. [Export-XmlData](#Export-XmlData)
 11. [Format-Xml](#Format-Xml)
+
+---
+
+## Test-XMLString
+
+Validates a string as a well-formed XML.
+
+| Argument  | Type   | Mandatory | Description                          | Example Value                              |
+|-----------|--------|-----------|--------------------------------------|--------------------------------------------|
+| XmlString | string | Yes       | The XML string to validate           | `'<books><book>...</book></books>'`        |
+
+Usage:
+
+To validate a string as a well-formed XML:
+
+```powershell
+$xmlString = @"
+<books>
+  <book><title>Book One</title></book>
+</books>
+"@
+$result = Test-XMLString -XmlString $xmlString
+Write-Host "Is valid XML: $result"
+```
 
 ---
 
@@ -38,6 +63,51 @@ $attributes = @{ "version" = "1.0"; "encoding" = "UTF-8" }
 $doc = Create-XmlDocument -RootElement "books" -Attributes $attributes
 Write-Output $doc.OuterXml
 ```
+
+---
+
+## Get-XmlElement
+
+Extracts elements from an XML document using an XPath query.
+
+| Argument   | Type   | Mandatory | Description                             | Example Value                          |
+|------------|--------|-----------|-----------------------------------------|----------------------------------------|
+| XmlContent | xml    | Yes       | The XML content to parse                | `'<books><book>...</book></books>'`    |
+| XPath      | string | Yes       | The XPath query to select elements      | `'//book/title'`                       |
+
+Usage:
+
+To extract all `<book>` elements and print their titles:
+
+```powershell
+$xml = [xml]@"
+<books>
+  <book><title>Book One</title></book>
+  <book>
+    <title>Book Two</title>
+    <desc>Book Two Description</desc>
+  </book>
+  <magazine>
+    <title>Magazine</title>
+    <desc>Magazine Description</desc>
+  </magazine>
+</books>
+"@
+$books = Get-XmlElement -XmlContent $xml -XPath '//book'
+foreach ($book in $books) {
+    "[BOOK] Title: $($book.title.InnerText)"
+}
+```
+
+To extract the `<desc>` element of `<magazine>` and print its content:
+
+```powershell
+$magazineDesc = Get-XmlElement -XmlContent $xml -XPath '//magazine/desc'
+foreach ($desc in $magazineDesc) {
+    "[MAGAZINE] Description: $($desc.InnerText)"
+}
+```
+
 
 ---
 
