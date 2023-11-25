@@ -194,3 +194,76 @@ function Set-XmlElement {
         return $null
     }
 }
+
+<#
+.SYNOPSIS
+Adds ied location in an XML document.
+a new XML element to a specif
+.DESCRIPTION
+This function adds a new element to an XML document at the location specified by an XPath expression.
+
+.PARAMETER XmlContent
+The XML content to be modified.
+
+.PARAMETER ParentXPath
+The XPath expression to locate the parent element.
+
+.PARAMETER NewElementName
+The name of the new element to add.
+
+.PARAMETER NewElementValue
+Optional value for the new element.
+
+.PARAMETER Attributes
+Optional hashtable of attributes for the new element.
+
+.EXAMPLE
+$xml = [xml]@"
+<books>
+  <book><title>Book One</title></book>
+</books>
+"@
+Add-XmlElement -XmlContent $xml -ParentXPath '/books' -NewElementName 'book' -NewElementValue 'Book Two'
+$xml.OuterXml
+#>
+
+function Add-XmlElement {
+    param (
+        [Parameter(Mandatory=$true)]
+        [xml]$XmlContent,
+
+        [Parameter(Mandatory=$true)]
+        [string]$ParentXPath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$NewElementName,
+
+        [Parameter(Mandatory=$false)]
+        [string]$NewElementValue,
+
+        [Parameter(Mandatory=$false)]
+        [hashtable]$Attributes
+    )
+
+    $parentNode = $XmlContent.SelectSingleNode($ParentXPath)
+    if ($parentNode -eq $null) {
+        Write-Error "Parent element not found with the XPath: $ParentXPath"
+        return $null
+    }
+
+    $newElement = $XmlContent.CreateElement($NewElementName)
+    if ($NewElementValue) {
+        $newElement.InnerText = $NewElementValue
+    }
+
+    if ($Attributes) {
+        foreach ($key in $Attributes.Keys) {
+            $attr = $XmlContent.CreateAttribute($key)
+            $attr.Value = $Attributes[$key]
+            $newElement.SetAttributeNode($attr)
+        }
+    }
+
+    $parentNode.AppendChild($newElement)
+    return $XmlContent
+}

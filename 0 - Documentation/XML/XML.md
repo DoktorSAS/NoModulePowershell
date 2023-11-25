@@ -135,6 +135,33 @@ Set-XmlElement -XmlContent $xml -XPath '/books/book/title' -NewValue 'New Title'
 $xml.OuterXml
 ```
 
+---
+
+## Add-XmlElement
+
+Adds a new element to an XML document at a specified location.
+
+| Argument       | Type     | Mandatory | Description                             | Example Value                      |
+|----------------|----------|-----------|-----------------------------------------|------------------------------------|
+| XmlContent     | xml      | Yes       | The XML content to be modified          | `'<books><book>...</book></books>'`|
+| ParentXPath    | string   | Yes       | The XPath expression to locate the parent element | `'/books'`                      |
+| NewElementName | string   | Yes       | The name of the new element to add      | `'book'`                           |
+| NewElementValue| string   | No        | Optional value for the new element      | `'Book Two'`                       |
+| Attributes     | hashtable| No        | Optional hashtable of attributes for the new element | `@{ "id" = "2" }`             |
+
+Usage:
+
+To add a new element to an XML document:
+
+```powershell
+$xml = [xml]@"
+<books>
+  <book><title>Book One</title></book>
+</books>
+"@
+Add-XmlElement -XmlContent $xml -ParentXPath '/books' -NewElementName 'book' -NewElementValue 'Book Two'
+$xml.OuterXml
+```
 
 
 ---
