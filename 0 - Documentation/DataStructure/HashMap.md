@@ -12,6 +12,89 @@ The `HashMap.ps1` file within the NoModulePowershell library provides a comprehe
 
 ---
 
+## Create-HashMap
+
+Creates a new hashtable.
+
+Usage:
+
+```powershell
+$hashMap = Create-HashMap
+```
+
+## Add-ToHashMap
+
+Adds a key-value pair to a hashtable.
+
+| Argument | Type      | Mandatory | Description                         | Example Value |
+|----------|-----------|-----------|-------------------------------------|---------------|
+| HashMap  | hashtable | Yes       | The hashtable to add the pair to.   | `$hashMap`    |
+| Key      | Object    | Yes       | The key for the pair.               | `"key1"`      |
+| Value    | Object    | Yes       | The value for the pair.             | `"value1"`    |
+
+Usage:
+
+```powershell
+$hashMap = Create-HashMap
+Add-ToHashMap -HashMap $hashMap -Key "key1" -Value "value1"
+```
+
+## Remove-FromHashMap
+
+Removes a key-value pair from a hashtable.
+
+| Argument | Type      | Mandatory | Description                           | Example Value |
+|----------|-----------|-----------|---------------------------------------|---------------|
+| HashMap  | hashtable | Yes       | The hashtable to remove the pair from.| `$hashMap`    |
+| Key      | Object    | Yes       | The key of the pair to remove.        | `"key1"`      |
+
+Usage:
+
+```powershell
+$hashMap = Create-HashMap
+$hashMap["key1"] = "value1"
+Remove-FromHashMap -HashMap $hashMap -Key "key1"
+```
+
+---
+
+## Get-FromHashMap
+
+Retrieves a value from a hashtable based on the key.
+
+| Argument | Type      | Mandatory | Description                         | Example Value |
+|----------|-----------|-----------|-------------------------------------|---------------|
+| HashMap  | hashtable | Yes       | The hashtable to retrieve the value from.| `$hashMap`|
+| Key      | Object    | Yes       | The key of the value to retrieve.   | `"key1"`      |
+
+Usage:
+
+```powershell
+$hashMap = Create-HashMap
+$hashMap["key1"] = "value1"
+$value = Get-FromHashMap -HashMap $hashMap -Key "key1"
+Write-Host "Retrieved value: $value"
+```
+
+---
+
+## Update-HashMapValue
+
+Updates the value of a specific key in a hashtable.
+
+| Argument | Type      | Mandatory | Description                           | Example Value |
+|----------|-----------|-----------|---------------------------------------|---------------|
+| HashMap  | hashtable | Yes       | The hashtable to update the value in. | `$hashMap`    |
+| Key      | Object    | Yes       | The key of the value to update.       | `"key1"`      |
+| NewValue | Object    | Yes       | The new value for the key.            | `"newValue"`  |
+
+Usage:
+
+```powershell
+$hashMap = Create-HashMap
+$hashMap["key1"] = "oldValue"
+Update-HashMapValue -HashMap $hashMap -Key "key1" -NewValue "newValue"
+```
 
 ---
 
