@@ -662,3 +662,62 @@ function Set-ExcelColumnData {
     $excel.Quit()
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 }
+
+<#
+.SYNOPSIS
+Creates a copy of an Excel file.
+
+.DESCRIPTION
+This function creates a copy of an existing Excel file. It can also generate a unique filename based on a timestamp.
+
+.PARAMETER SourceFilePath
+The path of the source Excel file.
+
+.PARAMETER DestinationDirectory
+The directory where the copied file will be saved.
+
+.PARAMETER Unique
+If set, a unique timestamp will be appended to the filename.
+
+.EXAMPLE
+Copy-ExcelFile -SourceFilePath "C:\source\file.xlsx" -DestinationDirectory "C:\destination" -Unique
+#>
+
+function Copy-ExcelFile {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$SourceFilePath,
+
+        [Parameter(Mandatory=$true)]
+        [string]$DestinationDirectory,
+
+        [Parameter(Mandatory=$false)]
+        [switch]$Unique
+    )
+
+    # Verifica se il file sorgente esiste
+    if (-not (Test-Path -Path $SourceFilePath)) {
+        Write-Error "Source file does not exist."
+        return
+    }
+
+    # Estrai il nome del file
+    $sourceFileName = [System.IO.Path]::GetFileNameWithoutExtension($SourceFilePath)
+    $extension = [System.IO.Path]::GetExtension($SourceFilePath)
+
+    # Genera un nome file unico se richiesto
+    $destinationFileName = $sourceFileName
+    if ($Unique) {
+        $timestamp = Get-Date -Format "yyyyMMdd-HHmmss"
+        $destinationFileName = "$sourceFileName-$timestamp"
+    }
+    
+    $destinationFilePath = [System.IO.Path]::Combine($DestinationDirectory, "$destinationFileName$extension")
+
+    # Copia il file
+    Copy-Item -Path $SourceFilePath -Destination $destinationFilePath
+
+    Write-Host "File copied to: $destinationFilePath"
+    return $destinationFilePath
+}
+

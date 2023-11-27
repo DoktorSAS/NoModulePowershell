@@ -5,14 +5,15 @@ The Excel.ps1 file in the NoModulePowershell library presents a comprehensive co
 ## List of Functions
 
 1. [Create-ExcelFile](#create-excelfile)
-2. [Get-ExcelRowCount](#get-excelrowcount)
-3. [Get-ExcelColumnCount](#Get-ExcelColumnCount)
-4. [Get-ExcelCellValue](#Get-ExcelCellValue)
-5. [Set-ExcelCellValue](#Set-ExcelCellValue)
-6. [Get-ExcelRowData](#Get-ExcelRowData)
-7. [Get-ExcelColumnData](#Get-ExcelColumnData)
-8. [Set-ExcelRowData](#Set-ExcelRowData)
-9. [Set-ExcelColumnData](#Set-ExcelColumnData)
+2. [Copy-ExcelFile](#Copy-ExcelFile)
+3. [Get-ExcelRowCount](#get-excelrowcount)
+4. [Get-ExcelColumnCount](#Get-ExcelColumnCount)
+5. [Get-ExcelCellValue](#Get-ExcelCellValue)
+6. [Set-ExcelCellValue](#Set-ExcelCellValue)
+7. [Get-ExcelRowData](#Get-ExcelRowData)
+8. [Get-ExcelColumnData](#Get-ExcelColumnData)
+9. [Set-ExcelRowData](#Set-ExcelRowData)
+10. [Set-ExcelColumnData](#Set-ExcelColumnData)
 
 ---
 
@@ -44,6 +45,32 @@ To create an empty Excel file with a unique name:
 $filePath = "C:\Path\To\Your"
 $fileName = "MyUniqueExcelFile"
 Create-ExcelFile -filePath $filePath -fileName $fileName -unique
+```
+
+---
+
+## Copy-ExcelFile
+
+Creates a copy of an Excel file with options for a unique filename.
+
+| Argument           | Type    | Mandatory | Description                                          | Example Value                          |
+|--------------------|---------|-----------|------------------------------------------------------|----------------------------------------|
+| SourceFilePath     | string  | Yes       | The path of the source Excel file.                   | `"C:\source\file.xlsx"`                |
+| DestinationDirectory| string | Yes       | The directory where the copied file will be saved.   | `"C:\destination"`                     |
+| Unique             | switch  | No        | If set, a unique timestamp will be appended to the filename. |                                        |
+
+Usage:
+
+To create a copy of an Excel file:
+
+```powershell
+Copy-ExcelFile -SourceFilePath "C:\source\file.xlsx" -DestinationDirectory "C:\destination"
+```
+
+To create a copy of an Excel file with a unique timestamp in the filename:
+
+```powershell
+Copy-ExcelFile -SourceFilePath "C:\source\file.xlsx" -DestinationDirectory "C:\destination" -Unique
 ```
 
 ---
