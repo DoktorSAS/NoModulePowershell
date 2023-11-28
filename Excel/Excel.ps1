@@ -555,7 +555,6 @@ $rowIndex = 3
 $values = @("Data1", "Data2", "Data3")
 Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
 #>
-
 function Set-ExcelRowData {
     param (
         [Parameter(Mandatory=$true)]
@@ -565,42 +564,30 @@ function Set-ExcelRowData {
         [int]$rowIndex,
 
         [Parameter(Mandatory=$true)]
-        [object[]]$values,
+        [int]$startColumnIndex,
 
-        [Parameter(Mandatory=$false)]
-        [object]$startColumnIndex
+        [Parameter(Mandatory=$true)]
+        [object[]]$values
     )
 
     $excel = New-Object -ComObject Excel.Application
     $excel.Visible = $false
     $workbook = $excel.Workbooks.Open($filePath)
-    $worksheet = $workbook.Sheets.Item(1)
+    $worksheet = $workbook.Worksheets.Item(1)
 
-    # Convert column letter to number if necessary
-    if ($startColumnIndex -is [string]) {
-        $colNumber = 0
-        $startColumnIndex.ToCharArray() | ForEach-Object {
-            $colNumber = $colNumber * 26 + ([int][char]$_ - [int][char]'A' + 1)
-        }
-        $startColumnIndex = $colNumber
-    }
-
-    # Find the first empty column if startColumnIndex is not specified
-    if (-not $startColumnIndex) {
-        $startColumnIndex = 1
-        while ($worksheet.Cells.Item($rowIndex, $startColumnIndex).Value2 -ne $null) {
-            $startColumnIndex++
-        }
-    }
-
-    # Set the values in the row
     for ($i = 0; $i -lt $values.Length; $i++) {
-        $worksheet.Cells.Item($rowIndex, $startColumnIndex + $i).Value2 = $values[$i]
+        $colIndex = $startColumnIndex + $i
+        $cell = $worksheet.Cells.Item($rowIndex, $colIndex)
+
+        # Imposta il formato della cella come testo
+        $cell.NumberFormat = "@"
+
+        # Assegna il valore convertendolo esplicitamente in testo
+        $cell.Value2 = [String]$values[$i]
     }
 
-    # Save and close the workbook
     $workbook.Save()
-    $workbook.Close()
+    $workbook.Close($true)
     $excel.Quit()
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 }
@@ -630,7 +617,6 @@ $columnIndex = 2
 $values = @("Data1", "Data2", "Data3")
 Set-ExcelColumnData -filePath $filePath -columnIndex $columnIndex -values $values -startRowIndex 1
 #>
-
 function Set-ExcelColumnData {
     param (
         [Parameter(Mandatory=$true)]
@@ -640,28 +626,31 @@ function Set-ExcelColumnData {
         [int]$columnIndex,
 
         [Parameter(Mandatory=$true)]
-        [object[]]$values,
-
-        [Parameter(Mandatory=$false)]
-        [int]$startRowIndex = 1
+        [object[]]$values
     )
 
     $excel = New-Object -ComObject Excel.Application
     $excel.Visible = $false
     $workbook = $excel.Workbooks.Open($filePath)
-    $worksheet = $workbook.Sheets.Item(1)
+    $worksheet = $workbook.Worksheets.Item(1)
 
-    # Set the values in the column
     for ($i = 0; $i -lt $values.Length; $i++) {
-        $worksheet.Cells.Item($startRowIndex + $i, $columnIndex).Value2 = $values[$i]
+        $rowIndex = $i + 1  # Assumendo che la prima riga sia l'header
+        $cell = $worksheet.Cells.Item($rowIndex, $columnIndex)
+
+        # Imposta il formato della cella come testo
+        $cell.NumberFormat = "@"
+
+        # Assegna il valore convertendolo esplicitamente in testo
+        $cell.Value2 = [String]$values[$i]
     }
 
-    # Save and close the workbook
     $workbook.Save()
-    $workbook.Close()
+    $workbook.Close($true)
     $excel.Quit()
     [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null
 }
+
 
 <#
 .SYNOPSIS
