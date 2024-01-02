@@ -4,11 +4,11 @@ The `HashMap.ps1` file within the NoModulePowershell library provides a comprehe
 
 ## List of Functions
 
-1. [Create-HashMap](#Create-HashMap) - Crea una nuova hashmap (hashtable).
-2. [Add-ToHashMap](#Add-ToHashMap) - Aggiunge una coppia chiave-valore alla hashmap.
-3. [Remove-FromHashMap](#Remove-FromHashMap) - Rimuove una coppia chiave-valore dalla hashmap.
-4. [Get-FromHashMap](#Get-FromHashMap) - Ottiene un valore dalla hashmap basato sulla chiave.
-5. [Update-HashMapValue](#Update-HashMapValue) - Aggiorna il valore di una chiave specifica nella hashmap.
+1. [Create-HashMap](#Create-HashMap)
+2. [Set-HashMap](#Set-HashMap)
+3. [Remove-FromHashMap](#Remove-FromHashMap)
+4. [Get-FromHashMap](#Get-FromHashMap)
+5. [Update-HashMapValue](#Update-HashMapValue)
 
 ---
 
@@ -22,7 +22,7 @@ Usage:
 $hashMap = Create-HashMap
 ```
 
-## Add-ToHashMap
+## Set-HashMap
 
 Adds a key-value pair to a hashtable.
 
@@ -36,7 +36,7 @@ Usage:
 
 ```powershell
 $hashMap = Create-HashMap
-Add-ToHashMap -HashMap $hashMap -Key "key1" -Value "value1"
+Set-HashMap -HashMap $hashMap -Key "key1" -Value "value1"
 ```
 
 ## Remove-FromHashMap

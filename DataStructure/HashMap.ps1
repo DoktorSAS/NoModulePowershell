@@ -30,9 +30,9 @@ The value for the pair.
 
 .EXAMPLE
 $hashMap = Create-HashMap
-Add-ToHashMap -HashMap $hashMap -Key "key1" -Value "value1"
+Set-HashMap -HashMap $hashMap -Key "key1" -Value "value1"
 #>
-function Add-ToHashMap {
+function Set-HashMap {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$HashMap,
