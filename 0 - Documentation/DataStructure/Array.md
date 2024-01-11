@@ -4,11 +4,11 @@ The `Array.ps1` file in the NoModulePowershell library offers a fundamental tool
 
 ## List of Functions
 
-- [Create-Array](#Create-Array) - Crea un nuovo array.
-- [Add-ToArray](#Add-ToArray) - Aggiunge un elemento a un array.
-- [Remove-FromArray](#Remove-FromArray) - Rimuove un elemento da un array.
-- [Get-FromArray](#Get-FromArray) - Ottiene un elemento da un array.
-- [Update-ArrayElement](#Update-ArrayElement) - Aggiorna un elemento in un array.
+- [Create-Array](#Create-Array)
+- [Add-ToArray](#Add-ToArray)
+- [Remove-FromArray](#Remove-FromArray)
+- [Get-FromArray](#Get-FromArray)
+- [Update-ArrayElement](#Update-ArrayElement)
 
 ---
 

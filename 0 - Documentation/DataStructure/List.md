@@ -5,11 +5,11 @@ The `List.ps1` script is designed to handle dynamic list (ArrayList) operations 
 
 ## List of Functions
 
-1. [Create-List](#Create-List) - Crea una nuova lista (ArrayList).
-2. [Add-ToList](#Add-ToList) - Aggiunge un elemento a una lista.
-3. [Remove-FromList](#Remove-FromList) - Rimuove un elemento da una lista.
-4. [Get-FromList](#Get-FromList) - Ottiene un elemento da una lista.
-5. [Update-ListElement](#Update-ListElement) - Aggiorna un elemento in una lista.
+1. [Create-List](#Create-List)
+2. [Add-ToList](#Add-ToList)
+3. [Remove-FromList](#Remove-FromList)
+4. [Get-FromList](#Get-FromList)
+5. [Set-ListElement](#Set-ListElement)
 
 ---
 
@@ -74,7 +74,7 @@ $item = Get-FromList -List $list -Index 0
 Write-Host "Retrieved item: $item"
 ```
 
-## Update-ListElement
+## Set-ListElement
 
 Updates an item in an ArrayList at a specified index.
 
@@ -89,7 +89,7 @@ Usage:
 ```powershell
 $list = Create-List
 $list.Add("Old Item")
-Update-ListElement -List $list -Index 0 -NewItem "Updated Item"
+Set-ListElement -List $list -Index 0 -NewItem "Updated Item"
 ```
 
 ---

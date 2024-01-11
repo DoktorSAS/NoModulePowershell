@@ -126,9 +126,9 @@ The new item to replace the old item.
 .EXAMPLE
 $list = Create-List
 $list.Add("Old Item")
-Update-ListElement -List $list -Index 0 -NewItem "Updated Item"
+Set-ListElement -List $list -Index 0 -NewItem "Updated Item"
 #>
-function Update-ListElement {
+function Set-ListElement {
     param (
         [Parameter(Mandatory=$true)]
         [System.Collections.ArrayList]$List,

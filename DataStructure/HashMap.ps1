@@ -127,9 +127,9 @@ The new value for the key.
 .EXAMPLE
 $hashMap = Create-HashMap
 $hashMap["key1"] = "oldValue"
-Update-HashMapValue -HashMap $hashMap -Key "key1" -NewValue "newValue"
+Set-HashMapValue -HashMap $hashMap -Key "key1" -NewValue "newValue"
 #>
-function Update-HashMapValue {
+function Set-HashMapValue {
     param (
         [Parameter(Mandatory=$true)]
         [hashtable]$HashMap,

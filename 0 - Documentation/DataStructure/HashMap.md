@@ -8,7 +8,7 @@ The `HashMap.ps1` file within the NoModulePowershell library provides a comprehe
 2. [Set-HashMap](#Set-HashMap)
 3. [Remove-FromHashMap](#Remove-FromHashMap)
 4. [Get-FromHashMap](#Get-FromHashMap)
-5. [Update-HashMapValue](#Update-HashMapValue)
+5. [Set-HashMapValue](#Set-HashMapValue)
 
 ---
 
@@ -78,7 +78,7 @@ Write-Host "Retrieved value: $value"
 
 ---
 
-## Update-HashMapValue
+## Set-HashMapValue
 
 Updates the value of a specific key in a hashtable.
 
@@ -93,7 +93,7 @@ Usage:
 ```powershell
 $hashMap = Create-HashMap
 $hashMap["key1"] = "oldValue"
-Update-HashMapValue -HashMap $hashMap -Key "key1" -NewValue "newValue"
+Set-HashMapValue -HashMap $hashMap -Key "key1" -NewValue "newValue"
 ```
 
 ---
