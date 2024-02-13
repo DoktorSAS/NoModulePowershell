@@ -98,33 +98,28 @@ function Create-XmlDocument {
 
 <#
 .SYNOPSIS
-Extracts elements from an XML document by XPath.
+Retrieves XML elements using XPath from an XML document.
 
 .DESCRIPTION
-This function retrieves elements from an XML document using an XPath query.
+This function takes an XML document, an XPath expression, and an optional XmlNamespaceManager
+to retrieve XML elements matching the specified criteria.
 
 .PARAMETER XmlContent
-The XML content to parse.
+The XML content to query.
 
 .PARAMETER XPath
-The XPath query to select elements.
+The XPath expression to locate nodes in the XML document.
+
+.PARAMETER XmlNamespaceManager
+(Optional) The XmlNamespaceManager to use for resolving namespaces in the XPath expression.
 
 .EXAMPLE
-$xml = [xml]@"
-<books>
-  <book><title>Book One</title></book>
-  <book>
-    <title>Book Two</title>
-    <desc>Book Two Description</desc>
-  </book>
-  <magazine>
-    <title>Magazine</title>
-    <desc>Magazine Dexription</desc>
-  </magazine>
-</books>
-"@
-$elements = Get-XmlElement -XmlContent $xml -XPath '//book/title'
-$elements | ForEach-Object { Write-Output $_.InnerText }
+$xmlContent = Get-Content -Path "C:\Path\To\Your\File.xml" -Raw
+$elements = Get-XmlElement -XmlContent $xmlContent -XPath "//Your/Path/To/Elements"
+foreach ($element in $elements) {
+    # Process each XML element
+    Write-Host $element.InnerText
+}
 #>
 
 function Get-XmlElement {
@@ -133,13 +128,19 @@ function Get-XmlElement {
         [xml]$XmlContent,
 
         [Parameter(Mandatory=$true)]
-        [string]$XPath
+        [string]$XPath,
+
+        [string]$XmlNamespaceManager = "" 
     )
 
     try {
         $xmlDocument = [System.Xml.XmlDocument]::new()
         $xmlDocument.LoadXml($XmlContent.OuterXml)
         $nodes = $xmlDocument.SelectNodes($XPath)
+        if($XmlNamespaceManager){
+            $nodes = $xmlDocument.SelectNodes($XPath, $XmlNamespaceManager)
+        }
+        
         return $nodes
     } catch {
         Write-Error "An error occurred: $_"

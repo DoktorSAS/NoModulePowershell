@@ -69,14 +69,17 @@ Write-Output $doc.OuterXml
 
 ## Get-XmlElement
 
-Extracts elements from an XML document using an XPath query.
+Retrieves XML elements using XPath from an XML document.
 
-| Argument   | Type   | Mandatory | Description                             | Example Value                          |
-|------------|--------|-----------|-----------------------------------------|----------------------------------------|
-| XmlContent | xml    | Yes       | The XML content to parse                | `'<books><book>...</book></books>'`    |
-| XPath      | string | Yes       | The XPath query to select elements      | `'//book/title'`                       |
+### Arguments
 
-Usage:
+| Argument             | Type     | Mandatory | Description                                   | Example Value                         |
+|----------------------|----------|-----------|-----------------------------------------------|---------------------------------------|
+| `XmlContent`         | `xml`    | Yes       | The XML content to query.                     | `'<books><book>...</book></books>'`   |
+| `XPath`              | `string` | Yes       | The XPath expression to locate nodes in XML.  | `'//book/title'`                      |
+| `XmlNamespaceManager`| `string` | No        | (Optional) The XmlNamespaceManager to use for resolving namespaces in XPath. |           |
+
+### Usage
 
 To extract all `<book>` elements and print their titles:
 
