@@ -40,18 +40,18 @@ Write-HostWithTimestamp "Creating a unique copy of the Excel file from $sourceFi
 $copyFilePath = Copy-ExcelFile -SourceFilePath $sourceFilePath -DestinationDirectory $destinationDirectory -Unique
 
 # Get the number of rows in the Excel file
-$rowCount = Get-ExcelRowCount -filePath $copyFilePath
+$rowCount = Get-ExcelRowCount -FilePath $copyFilePath
 
 # Step 2: Read each row and create JSON objects
 Write-HostWithTimestamp "Reading data from the Excel file and creating JSON objects..."
 for ($i = 2; $i -le $rowCount; $i++) {
-    $rowData = Get-ExcelRowData -filePath $copyFilePath -rowIndex $i -matchHeader
-    $jsonObject = [PSCustomObject]@{
+    $rowData = Get-ExcelRowData -FilePath $copyFilePath -RowIndex $i -MatchHeader
+    $JsonObject = [PSCustomObject]@{
         userId = $rowData["userId"]
         title  = $rowData["title"]
         body   = "This is a body text"  # Static body text or can be modified as needed
     }
-    $jsonBody = $jsonObject | ConvertTo-Json
+    $jsonBody = $JsonObject | ConvertTo-Json
 
     # Step 3 & 4: Build the HTTP request body and send the request
     $url = "https://jsonplaceholder.typicode.com/posts" # Posts endpoint
@@ -61,7 +61,7 @@ for ($i = 2; $i -le $rowCount; $i++) {
     $response = Invoke-HttpPostRequest -Url $url -Body $jsonBody
 
     # Check if the response is a valid JSON
-    $isValidJsonString = Test-JsonString -jsonString $response
+    $isValidJsonString = Test-JsonString -JsonString $response
     if ($isValidJsonString) {
         $response = ConvertFrom-Json $response
         Write-HostWithTimestamp $response
@@ -69,11 +69,11 @@ for ($i = 2; $i -le $rowCount; $i++) {
 
     # Step 5: Save the results back into the copied Excel file
     Write-HostWithTimestamp "Saving response data to Excel file..."
-    $idValue = Get-JsonProperty -jsonObject $response -propertyName "id" -defaultValue ""
-    $titleValue = Get-JsonProperty -jsonObject $response -propertyName "title" -defaultValue ""
+    $idValue = Get-JsonProperty -JsonObject $response -PropertyName "id" -DefaultValue ""
+    $titleValue = Get-JsonProperty -JsonObject $response -PropertyName "title" -DefaultValue ""
     
     $updatedValues = @($idValue, $titleValue) # Assuming columns for 'id' and 'title'
-    Set-ExcelRowData -filePath $copyFilePath -rowIndex $i -startColumnIndex 3 -values $updatedValues
+    Set-ExcelRowData -FilePath $copyFilePath -RowIndex $i -StartColumnIndex 3 -Values $updatedValues
 }
 
 Write-HostWithTimestamp "Automation completed successfully."

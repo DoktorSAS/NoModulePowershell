@@ -1,6 +1,6 @@
 # HashMap.ps1 Function Documentation
 
-The `HashMap.ps1` file within the NoModulePowershell library provides a comprehensive suite of functions for managing hashmaps (hashtables) in PowerShell. It includes functionalities for creating hashmaps, adding key-value pairs, removing pairs, updating values, and retrieving data based on keys. This script is a powerful tool for handling key-value paired data, offering fast retrieval and efficient data organization. HashMap.ps1 is crucial for scripts that require quick access to data, easy data updates, and structured data storage in key-value format
+The `HashMap.ps1` file within the NoModulePowershell library provides a comprehensive suite of functions for managing hashmaps (hashtables) in PowerShell. It includes functionalities for creating hashmaps, adding key-Value pairs, removing pairs, updating values, and retrieving data based on keys. This script is a powerful tool for handling key-Value paired data, offering fast retrieval and efficient data organization. HashMap.ps1 is crucial for scripts that require quick access to data, easy data updates, and structured data storage in key-Value format
 
 ## List of Functions
 
@@ -24,7 +24,7 @@ $hashMap = Create-HashMap
 
 ## Set-HashMap
 
-Adds a key-value pair to a hashtable.
+Adds a key-Value pair to a hashtable.
 
 | Argument | Type      | Mandatory | Description                         | Example Value |
 |----------|-----------|-----------|-------------------------------------|---------------|
@@ -41,7 +41,7 @@ Set-HashMap -HashMap $hashMap -Key "key1" -Value "value1"
 
 ## Remove-FromHashMap
 
-Removes a key-value pair from a hashtable.
+Removes a key-Value pair from a hashtable.
 
 | Argument | Type      | Mandatory | Description                           | Example Value |
 |----------|-----------|-----------|---------------------------------------|---------------|
@@ -72,8 +72,8 @@ Usage:
 ```powershell
 $hashMap = Create-HashMap
 $hashMap["key1"] = "value1"
-$value = Get-FromHashMap -HashMap $hashMap -Key "key1"
-Write-Host "Retrieved value: $value"
+$Value = Get-FromHashMap -HashMap $hashMap -Key "key1"
+Write-Host "Retrieved value: $Value"
 ```
 
 ---

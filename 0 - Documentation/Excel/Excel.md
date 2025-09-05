@@ -26,25 +26,25 @@ Creates a new Excel file at a specified location with optional headers and an op
 | filePath | string   | Yes       | The path where the Excel file will be saved                  | `'C:\Path\To\Your'`                     |
 | fileName | string   | Yes       | The name of the Excel file (without extension)               | `'MyExcelFile'`                         |
 | headers  | string[] | No        | An array of header names to be included in the Excel file    | `@("Name", "Age", "City")`              |
-| unique   | switch   | No        | If specified, appends a date and time to the file name to ensure it is unique | `-unique`                             |
+| unique   | switch   | No        | If specified, appends a date and time to the file name to ensure it is unique | `-Unique`                             |
 
 Usage:
 
 To create an Excel file with headers:
 
 ```powershell
-$filePath = "C:\Path\To\Your"
-$fileName = "MyExcelFile"
-$headers = @("Name", "Age", "City")
-Create-ExcelFile -filePath $filePath -fileName $fileName -headers $headers
+$FilePath = "C:\Path\To\Your"
+$FileName = "MyExcelFile"
+$Headers = @("Name", "Age", "City")
+Create-ExcelFile -FilePath $FilePath -FileName $FileName -Headers $Headers
 ```
 
 To create an empty Excel file with a unique name:
 
 ```powershell
-$filePath = "C:\Path\To\Your"
-$fileName = "MyUniqueExcelFile"
-Create-ExcelFile -filePath $filePath -fileName $fileName -unique
+$FilePath = "C:\Path\To\Your"
+$FileName = "MyUniqueExcelFile"
+Create-ExcelFile -FilePath $FilePath -FileName $FileName -Unique
 ```
 
 ---
@@ -89,14 +89,14 @@ Usage:
 To get the row count of an Excel file:
 
 ```powershell
-$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+$rowCount = Get-ExcelRowCount -FilePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of rows: $rowCount"
 ```
 
 To get the row count excluding the header:
 
 ```powershell
-$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -notIncludeHeader
+$rowCount = Get-ExcelRowCount -FilePath "C:\Path\To\Your\Excel\File.xlsx" -notIncludeHeader
 Write-Host "Number of rows excluding header: $rowCount"
 ```
 
@@ -109,21 +109,21 @@ Calculates the number of columns in the first row of an Excel file. This functio
 | Argument        | Type   | Mandatory | Description                                                  | Example Value                             |
 |-----------------|--------|-----------|--------------------------------------------------------------|-------------------------------------------|
 | filePath        | string | Yes       | The path to the Excel file                                    | `'C:\Path\To\Your\Excel\File.xlsx'`       |
-| omitFirstColumn | switch | No        | Excludes the first column from the column count              | `-omitFirstColumn`                        |
+| omitFirstColumn | switch | No        | Excludes the first column from the column count              | `-OmitFirstColumn`                        |
 
 Usage:
 
 To get the column count of an Excel file:
 
 ```powershell
-$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+$columnCount = Get-ExcelColumnCount -FilePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of columns: $columnCount"
 ```
 
 To get the column count excluding the first column:
 
 ```powershell
-$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
+$columnCount = Get-ExcelColumnCount -FilePath "C:\Path\To\Your\Excel\File.xlsx" -OmitFirstColumn
 Write-Host "Number of columns excluding the first column: $columnCount"
 ```
 
@@ -144,8 +144,8 @@ Usage:
 To get the value from cell at row 2, column B:
 
 ```powershell
-$value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
-Write-Host "Cell value: $value"
+$Value = Get-ExcelCellValue -FilePath "C:\Path\To\Your\Excel\File.xlsx" -RowIndex 2 -ColumnIndex 'B'
+Write-Host "Cell value: $Value"
 ```
 
 ---
@@ -166,7 +166,7 @@ Usage:
 To set the value in cell at row 2, column B:
 
 ```powershell
-Set-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B' -value "New Value"
+Set-ExcelCellValue -FilePath "C:\Path\To\Your\Excel\File.xlsx" -RowIndex 2 -ColumnIndex 'B' -Value "New Value"
 ```
 
 ---
@@ -179,7 +179,7 @@ Retrieves the data of a specified row in an Excel file as a hashtable. This func
 |-------------|--------|-----------|-----------------------------------------------|----------------------------------------------------|
 | filePath    | string | Yes       | The path of the Excel file                    | `'C:\Path\To\Your\Excel\File.xlsx'`                |
 | rowIndex    | int    | Yes       | The index of the row for data retrieval       | `3`                                                |
-| matchHeader | switch | No        | Matches data with headers in the first row    | `-matchHeader`                                     |
+| matchHeader | switch | No        | Matches data with headers in the first row    | `-MatchHeader`                                     |
 
 Usage:
 
@@ -187,8 +187,8 @@ To retrieve and print the data from row 3 of the Excel file, matching with heade
 
 ```powershell
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
-$rowIndex = 3
-$rowData = Get-ExcelRowData -filePath $excelFilePath -rowIndex $rowIndex -matchHeader
+$RowIndex = 3
+$rowData = Get-ExcelRowData -FilePath $excelFilePath -RowIndex $RowIndex -MatchHeader
 
 foreach ($key in $rowData.Keys) {
     Write-Host "$key: $($rowData[$key])"
@@ -207,7 +207,7 @@ Retrieves the data of a specified column in an Excel file as a hashtable. This f
 |------------------|--------|-----------|-----------------------------------------------|----------------------------------------------------|
 | filePath         | string | Yes       | The path of the Excel file                    | `'C:\Path\To\Your\Excel\File.xlsx'`                |
 | columnIndex      | int    | Yes       | The index of the column for data retrieval    | `2`                                                |
-| matchFirstColumn | switch | No        | Matches data with headers in the first column | `-matchFirstColumn`                                |
+| matchFirstColumn | switch | No        | Matches data with headers in the first column | `-MatchFirstColumn`                                |
 
 Usage:
 
@@ -215,8 +215,8 @@ To retrieve and print the data from column 2 of the Excel file, matching with he
 
 ```powershell
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
-$columnIndex = 2
-$columnData = Get-ExcelColumnData -filePath $excelFilePath -columnIndex $columnIndex -matchFirstColumn
+$ColumnIndex = 2
+$columnData = Get-ExcelColumnData -FilePath $excelFilePath -ColumnIndex $ColumnIndex -MatchFirstColumn
 
 foreach ($key in $columnData.Keys) {
     Write-Host "$key: $($columnData[$key])"
@@ -243,10 +243,10 @@ Usage:
 To set data in row 3 of the Excel file, starting from column B:
 
 ```powershell
-$filePath = "C:\Path\To\Your\Excel\File.xlsx"
-$rowIndex = 3
-$values = @("Data1", "Data2", "Data3")
-Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
+$FilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$RowIndex = 3
+$Values = @("Data1", "Data2", "Data3")
+Set-ExcelRowData -FilePath $FilePath -RowIndex $RowIndex -Values $Values -StartColumnIndex 'B'
 ```
 
 ---
@@ -267,10 +267,10 @@ Usage:
 To set data in column 2 of the Excel file, starting from row 1:
 
 ```powershell
-$filePath = "C:\Path\To\Your\Excel\File.xlsx"
-$columnIndex = 2
-$values = @("Data1", "Data2", "Data3")
-Set-ExcelColumnData -filePath $filePath -columnIndex $columnIndex -values $values -startRowIndex 1
+$FilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$ColumnIndex = 2
+$Values = @("Data1", "Data2", "Data3")
+Set-ExcelColumnData -FilePath $FilePath -ColumnIndex $ColumnIndex -Values $Values -startRowIndex 1
 ```
 
 

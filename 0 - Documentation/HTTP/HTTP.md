@@ -32,8 +32,8 @@ $response = Invoke-HttpGetRequest -Url "http://example.com/api/data"
 To send a GET request with custom headers:
 
 ```powershell
-$headers = @{ "Authorization" = "Bearer your_token" }
-$response = Invoke-HttpGetRequest -Url "http://example.com/api/data" -Headers $headers
+$Headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpGetRequest -Url "http://example.com/api/data" -Headers $Headers
 ```
 
 ---
@@ -60,9 +60,9 @@ $response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $da
 To send a POST request with JSON data and custom headers:
 
 ```powershell
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data -Headers $headers
+$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data -Headers $Headers
 ```
 
 ---
@@ -89,9 +89,9 @@ $response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $d
 To send a PUT request with JSON data and custom headers:
 
 ```powershell
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $Headers
 ```
 
 ---
@@ -116,8 +116,8 @@ $response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1"
 To send a DELETE request with custom headers:
 
 ```powershell
-$headers = @{ "Authorization" = "Bearer your_token" }
-$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $headers
+$Headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $Headers
 ```
 
 ---
@@ -144,9 +144,9 @@ $response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body 
 To send a PATCH request with JSON data and custom headers:
 
 ```powershell
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{email="john_updated@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $Headers
 ```
 
 

@@ -3,7 +3,7 @@
 Creates a new hashtable.
 
 .DESCRIPTION
-This function initializes a new hashtable for storing key-value pairs.
+This function initializes a new hashtable for storing key-Value pairs.
 
 .EXAMPLE
 $hashMap = Create-HashMap
@@ -14,10 +14,10 @@ function Create-HashMap {
 
 <#
 .SYNOPSIS
-Adds a key-value pair to a hashtable.
+Adds a key-Value pair to a hashtable.
 
 .DESCRIPTION
-This function adds a specified key-value pair to a hashtable.
+This function adds a specified key-Value pair to a hashtable.
 
 .PARAMETER HashMap
 The hashtable to add the pair to.
@@ -49,10 +49,10 @@ function Set-HashMap {
 
 <#
 .SYNOPSIS
-Removes a key-value pair from a hashtable.
+Removes a key-Value pair from a hashtable.
 
 .DESCRIPTION
-This function removes a specified key-value pair from a hashtable.
+This function removes a specified key-Value pair from a hashtable.
 
 .PARAMETER HashMap
 The hashtable to remove the pair from.
@@ -93,8 +93,8 @@ The key of the value to retrieve.
 .EXAMPLE
 $hashMap = Create-HashMap
 $hashMap["key1"] = "value1"
-$value = Get-FromHashMap -HashMap $hashMap -Key "key1"
-Write-Host "Retrieved value: $value"
+$Value = Get-FromHashMap -HashMap $hashMap -Key "key1"
+Write-Host "Retrieved value: $Value"
 #>
 function Get-FromHashMap {
     param (

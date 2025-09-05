@@ -21,64 +21,64 @@ An array of header names. This parameter is optional.
 If specified, appends a date and time to the file name to ensure it is unique.
 
 .EXAMPLE
-$filePath = "C:\Path\To\Your"
-$fileName = "MyExcelFile"
-$headers = @("Name", "Age", "City")
-Create-ExcelFile -filePath $filePath -fileName $fileName -headers $headers
+$FilePath = "C:\Path\To\Your"
+$FileName = "MyExcelFile"
+$Headers = @("Name", "Age", "City")
+Create-ExcelFile -FilePath $FilePath -FileName $FileName -Headers $Headers
 
 .EXAMPLE
-$filePath = "C:\Path\To\Your"
-$fileName = "MyUniqueExcelFile"
-Create-ExcelFile -filePath $filePath -fileName $fileName -unique
+$FilePath = "C:\Path\To\Your"
+$FileName = "MyUniqueExcelFile"
+Create-ExcelFile -FilePath $FilePath -FileName $FileName -Unique
 #>
 
 function Create-ExcelFile {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [string]$fileName,
+        [string]$FileName,
 
         [Parameter(Mandatory=$false)]
-        [string[]]$headers,
+        [string[]]$Headers,
 
         [Parameter(Mandatory=$false)]
-        [switch]$unique
+        [switch]$Unique
     )
 
     # Verify if the provided file path is valid
-    if (-not (Test-Path -Path $filePath)) {
+    if (-not (Test-Path -Path $FilePath)) {
         Write-Error "Specified file path is not valid."
         return
     }
 
     # Append a date and time if the 'unique' switch is used
-    if ($unique) {
+    if ($Unique) {
         $dateTimePart = Get-Date -Format "yyyyMMdd-HHmmssfff"
-        $fileName = "$fileName-$dateTimePart"
+        $FileName = "$FileName-$dateTimePart"
     }
 
     $excel = New-Object -ComObject Excel.Application
     $workbook = $excel.Workbooks.Add()
     $worksheet = $workbook.Worksheets.Item(1)
 
-    if ($headers) {
+    if ($Headers) {
         # Set the header row
-        for ($col = 1; $col -le $headers.Count; $col++) {
-            $worksheet.Cells.Item(1, $col).Value2 = $headers[$col - 1]
+        for ($col = 1; $col -le $Headers.Count; $col++) {
+            $worksheet.Cells.Item(1, $col).Value2 = $Headers[$col - 1]
             $worksheet.Cells.Item(1, $col).NumberFormat = "@"
         }
     }
 
     # Set the format of every cell to Text for all rows if headers are provided
-    if ($headers) {
+    if ($Headers) {
         $usedRange = $worksheet.UsedRange
         $usedRange.NumberFormat = "@"
     }
 
-    $outputFileName = "$fileName.xlsx"
-    $outputFilePath = Join-Path $filePath $outputFileName
+    $outputFileName = "$FileName.xlsx"
+    $outputFilePath = Join-Path $FilePath $outputFileName
 
     $workbook.SaveAs($outputFilePath)
     $excel.Quit()
@@ -104,14 +104,14 @@ If specified, excludes the header row from the row count.
 
 .EXAMPLE
 # Get the row count of an Excel file
-$rowCount = Get-ExcelRowCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+$rowCount = Get-ExcelRowCount -FilePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of rows: $rowCount"
 #>
 
 function Get-ExcelRowCount {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$false)]
         [switch]$notIncludeHeader
@@ -123,7 +123,7 @@ function Get-ExcelRowCount {
         $excel.Visible = $false
 
         # Open the Excel file
-        $workbook = $excel.Workbooks.Open($filePath)
+        $workbook = $excel.Workbooks.Open($FilePath)
 
         # Select the appropriate worksheet (assuming it's the first one)
         $worksheet = $workbook.Sheets.Item(1)
@@ -170,22 +170,22 @@ If specified, excludes the first column from the column count.
 
 .EXAMPLE
 # Get the column count of an Excel file
-$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx"
+$columnCount = Get-ExcelColumnCount -FilePath "C:\Path\To\Your\Excel\File.xlsx"
 Write-Host "Number of columns: $columnCount"
 
 .EXAMPLE
 # Get the column count of an Excel file, excluding the first column
-$columnCount = Get-ExcelColumnCount -filePath "C:\Path\To\Your\Excel\File.xlsx" -omitFirstColumn
+$columnCount = Get-ExcelColumnCount -FilePath "C:\Path\To\Your\Excel\File.xlsx" -OmitFirstColumn
 Write-Host "Number of columns excluding the first column: $columnCount"
 #>
 
 function Get-ExcelColumnCount {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$false)]
-        [switch]$omitFirstColumn
+        [switch]$OmitFirstColumn
     )
 
     try {
@@ -194,7 +194,7 @@ function Get-ExcelColumnCount {
         $excel.Visible = $false
 
         # Open the Excel file
-        $workbook = $excel.Workbooks.Open($filePath)
+        $workbook = $excel.Workbooks.Open($FilePath)
 
         # Select the appropriate worksheet (assuming it's the first one)
         $worksheet = $workbook.Sheets.Item(1)
@@ -203,7 +203,7 @@ function Get-ExcelColumnCount {
         $lastColumn = $worksheet.Cells.Item(1, $worksheet.Columns.Count).End(-4159).Column
 
         # Exclude the first column if specified
-        if ($omitFirstColumn) {
+        if ($OmitFirstColumn) {
             $lastColumn--
         }
 
@@ -244,39 +244,39 @@ The index or letter of the column of the cell.
 
 .EXAMPLE
 # Get the value from cell at row 2, column B
-$value = Get-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B'
-Write-Host "Cell value: $value"
+$Value = Get-ExcelCellValue -FilePath "C:\Path\To\Your\Excel\File.xlsx" -RowIndex 2 -ColumnIndex 'B'
+Write-Host "Cell value: $Value"
 #>
 
 function Get-ExcelCellValue {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$rowIndex,
+        [int]$RowIndex,
 
         [Parameter(Mandatory=$true)]
-        [object]$columnIndex  # Can be either an int or a string
+        [object]$ColumnIndex  # Can be either an int or a string
     )
 
     # Convert column letter to number if necessary
-    if ($columnIndex -is [string]) {
+    if ($ColumnIndex -is [string]) {
         $columnNumber = 0
-        $columnIndex.ToCharArray() | ForEach-Object {
+        $ColumnIndex.ToCharArray() | ForEach-Object {
             $columnNumber = $columnNumber * 26 + ([int][char]$_ - [int][char]'A' + 1)
         }
-        $columnIndex = $columnNumber
+        $ColumnIndex = $columnNumber
     }
 
     try {
         $excel = New-Object -ComObject Excel.Application
         $excel.Visible = $false
-        $workbook = $excel.Workbooks.Open($filePath)
+        $workbook = $excel.Workbooks.Open($FilePath)
         $worksheet = $workbook.Sheets.Item(1)
 
         # Retrieve the value
-        $value = $worksheet.Cells.Item($rowIndex, $columnIndex).Value2
+        $Value = $worksheet.Cells.Item($RowIndex, $ColumnIndex).Value2
 
         # Close Excel without saving changes
         $workbook.Close()
@@ -292,7 +292,7 @@ function Get-ExcelCellValue {
         }
     }
 
-    return $value
+    return $Value
 }
 
 <#
@@ -318,41 +318,41 @@ The value to set in the specified cell.
 
 .EXAMPLE
 # Set the value in cell at row 2, column B
-Set-ExcelCellValue -filePath "C:\Path\To\Your\Excel\File.xlsx" -rowIndex 2 -columnIndex 'B' -value "New Value"
+Set-ExcelCellValue -FilePath "C:\Path\To\Your\Excel\File.xlsx" -RowIndex 2 -ColumnIndex 'B' -Value "New Value"
 #>
 
 function Set-ExcelCellValue {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$rowIndex,
+        [int]$RowIndex,
 
         [Parameter(Mandatory=$true)]
-        [object]$columnIndex,  # Can be either an int or a string
+        [object]$ColumnIndex,  # Can be either an int or a string
 
         [Parameter(Mandatory=$true)]
-        [object]$value
+        [object]$Value
     )
 
     # Convert column letter to number if necessary
-    if ($columnIndex -is [string]) {
+    if ($ColumnIndex -is [string]) {
         $columnNumber = 0
-        $columnIndex.ToCharArray() | ForEach-Object {
+        $ColumnIndex.ToCharArray() | ForEach-Object {
             $columnNumber = $columnNumber * 26 + ([int][char]$_ - [int][char]'A' + 1)
         }
-        $columnIndex = $columnNumber
+        $ColumnIndex = $columnNumber
     }
 
     try {
         $excel = New-Object -ComObject Excel.Application
         $excel.Visible = $false
-        $workbook = $excel.Workbooks.Open($filePath)
+        $workbook = $excel.Workbooks.Open($FilePath)
         $worksheet = $workbook.Sheets.Item(1)
 
         # Set the value in the specified cell
-        $worksheet.Cells.Item($rowIndex, $columnIndex).Value2 = $value
+        $worksheet.Cells.Item($RowIndex, $ColumnIndex).Value2 = $Value
 
         # Save changes and close Excel
         $workbook.Save()
@@ -389,8 +389,8 @@ If specified, matches the data with headers in the first row.
 
 .EXAMPLE
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
-$rowIndex = 3
-$rowData = Get-ExcelRowData -filePath $excelFilePath -rowIndex $rowIndex -matchHeader
+$RowIndex = 3
+$rowData = Get-ExcelRowData -FilePath $excelFilePath -RowIndex $RowIndex -MatchHeader
 
 foreach ($key in $rowData.Keys) {
     Write-Host "$key: $($rowData[$key])"
@@ -402,13 +402,13 @@ This example retrieves the data from row 3 of the Excel file and prints each cel
 function Get-ExcelRowData {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$rowIndex,
+        [int]$RowIndex,
 
         [Parameter(Mandatory=$false)]
-        [switch]$matchHeader
+        [switch]$MatchHeader
     )
 
     # Create a new Excel application
@@ -416,18 +416,18 @@ function Get-ExcelRowData {
     $excel.Visible = $false
 
     # Open the Excel file
-    $workbook = $excel.Workbooks.Open($filePath)
+    $workbook = $excel.Workbooks.Open($FilePath)
     
     # Select the appropriate worksheet (assuming it's the first one)
     $worksheet = $workbook.Sheets.Item(1)
 
     # Determine headers if matchHeader is specified
-    $headers = @()
-    if ($matchHeader) {
+    $Headers = @()
+    if ($MatchHeader) {
         $headerRow = 1
         $headerCount = $worksheet.UsedRange.Columns.Count
         for ($i = 1; $i -le $headerCount; $i++) {
-            $headers += $worksheet.Cells.Item($headerRow, $i).Text
+            $Headers += $worksheet.Cells.Item($headerRow, $i).Text
         }
     }
 
@@ -437,8 +437,8 @@ function Get-ExcelRowData {
     # Iterate through each column in the specified row
     $columnCount = $worksheet.UsedRange.Columns.Count
     for ($col = 1; $col -le $columnCount; $col++) {
-        $cellValue = $worksheet.Cells.Item($rowIndex, $col).Text
-        $key = if ($headers.Count -ge $col) { $headers[$col - 1] } else { $col - 1 }
+        $cellValue = $worksheet.Cells.Item($RowIndex, $col).Text
+        $key = if ($Headers.Count -ge $col) { $Headers[$col - 1] } else { $col - 1 }
         $rowData[$key] = $cellValue
     }
 
@@ -469,8 +469,8 @@ If specified, matches the data with headers in the first column.
 
 .EXAMPLE
 $excelFilePath = "C:\Path\To\Your\Excel\File.xlsx"
-$columnIndex = 2
-$columnData = Get-ExcelColumnData -filePath $excelFilePath -columnIndex $columnIndex -matchFirstColumn
+$ColumnIndex = 2
+$columnData = Get-ExcelColumnData -FilePath $excelFilePath -ColumnIndex $ColumnIndex -MatchFirstColumn
 
 foreach ($key in $columnData.Keys) {
     Write-Host "$key: $($columnData[$key])"
@@ -482,13 +482,13 @@ This example retrieves the data from column 2 of the Excel file and prints each 
 function Get-ExcelColumnData {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$columnIndex,
+        [int]$ColumnIndex,
 
         [Parameter(Mandatory=$false)]
-        [switch]$matchFirstColumn
+        [switch]$MatchFirstColumn
     )
 
     # Create a new Excel application
@@ -496,18 +496,18 @@ function Get-ExcelColumnData {
     $excel.Visible = $false
 
     # Open the Excel file
-    $workbook = $excel.Workbooks.Open($filePath)
+    $workbook = $excel.Workbooks.Open($FilePath)
     
     # Select the appropriate worksheet (assuming it's the first one)
     $worksheet = $workbook.Sheets.Item(1)
 
     # Determine headers if matchFirstColumn is specified
-    $headers = @()
-    if ($matchFirstColumn) {
+    $Headers = @()
+    if ($MatchFirstColumn) {
         $headerColumn = 1
         $headerCount = $worksheet.UsedRange.Rows.Count
         for ($i = 1; $i -le $headerCount; $i++) {
-            $headers += $worksheet.Cells.Item($i, $headerColumn).Text
+            $Headers += $worksheet.Cells.Item($i, $headerColumn).Text
         }
     }
 
@@ -517,8 +517,8 @@ function Get-ExcelColumnData {
     # Iterate through each row in the specified column
     $rowCount = $worksheet.UsedRange.Rows.Count
     for ($row = 1; $row -le $rowCount; $row++) {
-        $cellValue = $worksheet.Cells.Item($row, $columnIndex).Text
-        $key = if ($headers.Count -ge $row) { $headers[$row - 1] } else { $row - 1 }
+        $cellValue = $worksheet.Cells.Item($row, $ColumnIndex).Text
+        $key = if ($Headers.Count -ge $row) { $Headers[$row - 1] } else { $row - 1 }
         $columnData[$key] = $cellValue
     }
 
@@ -550,40 +550,40 @@ An array of values to be set in the row.
 The index (number or letter) of the column from which to start setting the values. If not specified, starts from the first empty column.
 
 .EXAMPLE
-$filePath = "C:\Path\To\Your\Excel\File.xlsx"
-$rowIndex = 3
-$values = @("Data1", "Data2", "Data3")
-Set-ExcelRowData -filePath $filePath -rowIndex $rowIndex -values $values -startColumnIndex 'B'
+$FilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$RowIndex = 3
+$Values = @("Data1", "Data2", "Data3")
+Set-ExcelRowData -FilePath $FilePath -RowIndex $RowIndex -Values $Values -StartColumnIndex 'B'
 #>
 function Set-ExcelRowData {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$rowIndex,
+        [int]$RowIndex,
 
         [Parameter(Mandatory=$true)]
         [int]$startColumnIndex,
 
         [Parameter(Mandatory=$true)]
-        [object[]]$values
+        [object[]]$Values
     )
 
     $excel = New-Object -ComObject Excel.Application
     $excel.Visible = $false
-    $workbook = $excel.Workbooks.Open($filePath)
+    $workbook = $excel.Workbooks.Open($FilePath)
     $worksheet = $workbook.Worksheets.Item(1)
 
-    for ($i = 0; $i -lt $values.Length; $i++) {
-        $colIndex = $startColumnIndex + $i
-        $cell = $worksheet.Cells.Item($rowIndex, $colIndex)
+    for ($i = 0; $i -lt $Values.Length; $i++) {
+        $colIndex = $StartColumnIndex + $i
+        $cell = $worksheet.Cells.Item($RowIndex, $colIndex)
 
         # Imposta il formato della cella come testo
         $cell.NumberFormat = "@"
 
         # Assegna il valore convertendolo esplicitamente in testo
-        $cell.Value2 = [String]$values[$i]
+        $cell.Value2 = [String]$Values[$i]
     }
 
     $workbook.Save()
@@ -612,37 +612,37 @@ An array of values to be set in the column.
 The index of the row from which to start setting the values. If not specified, starts from the first row.
 
 .EXAMPLE
-$filePath = "C:\Path\To\Your\Excel\File.xlsx"
-$columnIndex = 2
-$values = @("Data1", "Data2", "Data3")
-Set-ExcelColumnData -filePath $filePath -columnIndex $columnIndex -values $values -startRowIndex 1
+$FilePath = "C:\Path\To\Your\Excel\File.xlsx"
+$ColumnIndex = 2
+$Values = @("Data1", "Data2", "Data3")
+Set-ExcelColumnData -FilePath $FilePath -ColumnIndex $ColumnIndex -Values $Values -startRowIndex 1
 #>
 function Set-ExcelColumnData {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$filePath,
+        [string]$FilePath,
 
         [Parameter(Mandatory=$true)]
-        [int]$columnIndex,
+        [int]$ColumnIndex,
 
         [Parameter(Mandatory=$true)]
-        [object[]]$values
+        [object[]]$Values
     )
 
     $excel = New-Object -ComObject Excel.Application
     $excel.Visible = $false
-    $workbook = $excel.Workbooks.Open($filePath)
+    $workbook = $excel.Workbooks.Open($FilePath)
     $worksheet = $workbook.Worksheets.Item(1)
 
-    for ($i = 0; $i -lt $values.Length; $i++) {
-        $rowIndex = $i + 1  # Assumendo che la prima riga sia l'header
-        $cell = $worksheet.Cells.Item($rowIndex, $columnIndex)
+    for ($i = 0; $i -lt $Values.Length; $i++) {
+        $RowIndex = $i + 1  # Assumendo che la prima riga sia l'header
+        $cell = $worksheet.Cells.Item($RowIndex, $ColumnIndex)
 
         # Imposta il formato della cella come testo
         $cell.NumberFormat = "@"
 
         # Assegna il valore convertendolo esplicitamente in testo
-        $cell.Value2 = [String]$values[$i]
+        $cell.Value2 = [String]$Values[$i]
     }
 
     $workbook.Save()

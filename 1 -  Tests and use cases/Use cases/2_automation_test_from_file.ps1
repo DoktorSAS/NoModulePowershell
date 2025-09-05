@@ -35,24 +35,24 @@ $destinationDirectory = $scriptDirectory
 Write-HostWithTimestamp "Creating a unique copy of the Excel file from $sourceFilePath..."
 $copyFilePath = Copy-ExcelFile -SourceFilePath $sourceFilePath -DestinationDirectory $destinationDirectory -Unique
 
-$rowCount = Get-ExcelRowCount -filePath $copyFilePath
+$rowCount = Get-ExcelRowCount -FilePath $copyFilePath
 
 Write-HostWithTimestamp "Reading data from the Excel file and creating JSON objects..."
 for ($i = 2; $i -le $rowCount; $i++) {
-    $rowData = Get-ExcelRowData -filePath $copyFilePath -rowIndex $i -matchHeader
-    $jsonObject = [PSCustomObject]@{
+    $rowData = Get-ExcelRowData -FilePath $copyFilePath -RowIndex $i -MatchHeader
+    $JsonObject = [PSCustomObject]@{
         userId = $rowData["userId"]
         title  = $rowData["title"]
         body   = "This is a body text"
     }
-    $jsonBody = $jsonObject | ConvertTo-Json
+    $jsonBody = $JsonObject | ConvertTo-Json
 
     $postUrl = "https://jsonplaceholder.typicode.com/posts"
     Write-HostWithTimestamp "Sending HTTP POST request with body: $jsonBody"
     
     $postResponse = Invoke-HttpPostRequest -Url $postUrl -Body $jsonBody
 
-    $isValidJsonString = Test-JsonString -jsonString $postResponse
+    $isValidJsonString = Test-JsonString -JsonString $postResponse
     if ($isValidJsonString) {
         $postResponse = ConvertFrom-Json $postResponse
     }
@@ -64,12 +64,12 @@ for ($i = 2; $i -le $rowCount; $i++) {
 
     # Salvataggio dei risultati nel file Excel
     Write-HostWithTimestamp "Saving post and comments data to Excel file..."
-    $idValue = Get-JsonProperty -jsonObject $postResponse -propertyName "id" -defaultValue ""
-    $titleValue = Get-JsonProperty -jsonObject $postResponse -propertyName "title" -defaultValue ""
+    $idValue = Get-JsonProperty -JsonObject $postResponse -PropertyName "id" -DefaultValue ""
+    $titleValue = Get-JsonProperty -JsonObject $postResponse -PropertyName "title" -DefaultValue ""
     $commentsCount = ($commentsResponse | ConvertFrom-Json).Count
 
     $updatedValues = @($idValue, $titleValue, $commentsCount) # Aggiungi una colonna per i commenti
-    Set-ExcelRowData -filePath $copyFilePath -rowIndex $i -startColumnIndex 3 -values $updatedValues
+    Set-ExcelRowData -FilePath $copyFilePath -RowIndex $i -StartColumnIndex 3 -Values $updatedValues
 }
 
 Write-HostWithTimestamp "Automation completed successfully."

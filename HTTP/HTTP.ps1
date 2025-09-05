@@ -16,8 +16,8 @@ Optional headers for the GET request.
 $response = Invoke-HttpGetRequest -Url "http://example.com/api/data"
 
 .EXAMPLE
-$headers = @{ "Authorization" = "Bearer your_token" }
-$response = Invoke-HttpGetRequest -Url "http://example.com/api/data" -Headers $headers
+$Headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpGetRequest -Url "http://example.com/api/data" -Headers $Headers
 #>
 
 function Invoke-HttpGetRequest {
@@ -60,9 +60,9 @@ $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
 $response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data
 
 .EXAMPLE
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data -Headers $headers
+$response = Invoke-HttpPostRequest -Url "http://example.com/api/users" -Body $data -Headers $Headers
 #>
 
 function Invoke-HttpPostRequest {
@@ -108,9 +108,9 @@ $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
 $response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data
 
 .EXAMPLE
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{name="John"; email="john@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+$response = Invoke-HttpPutRequest -Url "http://example.com/api/users/1" -Body $data -Headers $Headers
 #>
 
 function Invoke-HttpPutRequest {
@@ -152,8 +152,8 @@ Optional headers for the DELETE request.
 $response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1"
 
 .EXAMPLE
-$headers = @{ "Authorization" = "Bearer your_token" }
-$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $headers
+$Headers = @{ "Authorization" = "Bearer your_token" }
+$response = Invoke-HttpDeleteRequest -Url "http://example.com/api/users/1" -Headers $Headers
 #>
 
 function Invoke-HttpDeleteRequest {
@@ -196,9 +196,9 @@ $data = @{email="john_updated@example.com"} | ConvertTo-Json
 $response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data
 
 .EXAMPLE
-$headers = @{ "Content-Type" = "application/json" }
+$Headers = @{ "Content-Type" = "application/json" }
 $data = @{email="john_updated@example.com"} | ConvertTo-Json
-$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $headers
+$response = Invoke-HttpPatchRequest -Url "http://example.com/api/users/1" -Body $data -Headers $Headers
 #>
 
 function Invoke-HttpPatchRequest {

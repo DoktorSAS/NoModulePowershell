@@ -10,19 +10,19 @@ The string to be validated.
 
 .EXAMPLE
 # Validate if a string can be converted to a JSON object
-$jsonString = '{"name": "John", "age": 30}'
-$isValid = Test-JsonString -jsonString $jsonString
+$JsonString = '{"name": "John", "age": 30}'
+$isValid = Test-JsonString -JsonString $JsonString
 Write-Host "Is Valid JSON: $isValid"
 #>
 
 function Test-JsonString {
     param (
         [Parameter(Mandatory=$true)]
-        [string]$jsonString
+        [string]$JsonString
     )
 
     try {
-        $null = $jsonString | ConvertFrom-Json
+        $null = $JsonString | ConvertFrom-Json
         return $true
     } catch {
         return $false
@@ -43,9 +43,9 @@ The JSON object in which to check for the property.
 The name of the property to check for in the JSON object.
 
 .EXAMPLE
-$jsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
-$propertyName = "age"
-$exists = Test-JsonPropertyExists -jsonObject $jsonObject -propertyName $propertyName
+$JsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
+$PropertyName = "age"
+$exists = Test-JsonPropertyExists -JsonObject $JsonObject -PropertyName $PropertyName
 Write-Host "Property Exists: $exists"
 #>
 
@@ -53,14 +53,14 @@ function Test-JsonPropertyExists {
     param(
         [Parameter(Mandatory=$true)]
         [PSCustomObject]
-        $jsonObject,
+        $JsonObject,
 
         [Parameter(Mandatory=$true)]
         [string]
-        $propertyName
+        $PropertyName
     )
 
-    return $jsonObject.PSObject.Properties.Name -contains $propertyName
+    return $JsonObject.PSObject.Properties.Name -contains $PropertyName
 }
 
 <#
@@ -80,33 +80,33 @@ The name of the property to be set.
 The new value to set for the specified property.
 
 .EXAMPLE
-$jsonObject = '{"name": "John", "age": 30, "city": "New York"}' | ConvertFrom-Json
-$propertyName = "age"
+$JsonObject = '{"name": "John", "age": 30, "city": "New York"}' | ConvertFrom-Json
+$PropertyName = "age"
 $newValue = 31
-Set-JsonProperty -jsonObject $jsonObject -propertyName $propertyName -newValue $newValue
-Write-Host "Modified JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
+Set-JsonProperty -JsonObject $JsonObject -PropertyName $PropertyName -newValue $newValue
+Write-Host "Modified JSON Object: $($JsonObject | ConvertTo-Json -Depth 100)"
 #>
 
 function Set-JsonProperty {
     param (
         [Parameter(Mandatory=$true)]
-        [object]$jsonObject,
+        [object]$JsonObject,
 
         [Parameter(Mandatory=$true)]
-        [string]$propertyName,
+        [string]$PropertyName,
 
         [Parameter(Mandatory=$true)]
         [object]$newValue
     )
 
     # Check if the input is a JSON object
-    if ($jsonObject -isnot [System.Management.Automation.PSCustomObject]) {
+    if ($JsonObject -isnot [System.Management.Automation.PSCustomObject]) {
         Write-Host "Error: Input is not a valid JSON object."
         return $null
     }
 
     # Set the value of the specified property
-    $jsonObject.$propertyName = $newValue
+    $JsonObject.$PropertyName = $newValue
 }
 
 <#
@@ -127,8 +127,8 @@ The name of the property to search for in the JSON object.
 The default value to return if the property is not found. This parameter is optional.
 
 .EXAMPLE
-$jsonObject = ConvertFrom-Json '{ "1": {"name": "John", "age": 30} }'
-$propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age" -defaultValue "Not Found"
+$JsonObject = ConvertFrom-Json '{ "1": {"name": "John", "age": 30} }'
+$propertyValue = Get-JsonProperty -JsonObject $JsonObject -PropertyName "age" -DefaultValue "Not Found"
 Write-Host $propertyValue
 #>
 
@@ -136,21 +136,21 @@ function Get-JsonProperty {
     param(
         [Parameter(Mandatory=$true)]
         [PSCustomObject]
-        $jsonObject,
+        $JsonObject,
 
         [Parameter(Mandatory=$true)]
         [string]
-        $propertyName,
+        $PropertyName,
 
         [Parameter(Mandatory=$false)]
-        $defaultValue = $null
+        $DefaultValue = $null
     )
 
-    if ($jsonObject.PSObject.Properties[$propertyName]) {
-        return $jsonObject.PSObject.Properties[$propertyName].Value
+    if ($JsonObject.PSObject.Properties[$PropertyName]) {
+        return $JsonObject.PSObject.Properties[$PropertyName].Value
     } else {
-        Write-Error "Property '$propertyName' not found. Please check if the property name is correct."
-        return $defaultValue
+        Write-Error "Property '$PropertyName' not found. Please check if the property name is correct."
+        return $DefaultValue
     }
 }
 
@@ -174,31 +174,31 @@ The value of the new property to be added.
 
 .EXAMPLE
 # Add a new property to a JSON object
-$jsonObject = @{ "key1" = "value1" }
-Add-JsonProperty -jsonObject $jsonObject -propertyName "key2" -propertyValue "value2"
-Write-Host "Updated JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
+$JsonObject = @{ "key1" = "value1" }
+Add-JsonProperty -JsonObject $JsonObject -PropertyName "key2" -propertyValue "value2"
+Write-Host "Updated JSON Object: $($JsonObject | ConvertTo-Json -Depth 100)"
 #>
 
 function Add-JsonProperty {
     param (
         [Parameter(Mandatory=$true)]
-        [object]$jsonObject,
+        [object]$JsonObject,
 
         [Parameter(Mandatory=$true)]
-        [string]$propertyName,
+        [string]$PropertyName,
 
         [Parameter(Mandatory=$true)]
         $propertyValue
     )
 
     # Check if the property already exists
-    if ($jsonObject.$propertyName) {
-        Write-Host "Property '$propertyName' already exists."
+    if ($JsonObject.$PropertyName) {
+        Write-Host "Property '$PropertyName' already exists."
         return $null
     }
 
     # Add the new property
-    $jsonObject | Add-Member -MemberType NoteProperty -Name $propertyName -Value $propertyValue
+    $JsonObject | Add-Member -MemberType NoteProperty -Name $PropertyName -Value $propertyValue
 }
 
 <#
@@ -219,31 +219,31 @@ The value of the new property to be appended.
 
 .EXAMPLE
 # Append a new property to a JSON object
-$jsonObject = @{ "B" = "ValueB"; "C" = "ValueC"; "D" = "ValueD" }
-Append-JsonProperty -jsonObject $jsonObject -propertyName "A" -propertyValue "ValueA"
-Write-Host "Updated JSON Object: $($jsonObject | ConvertTo-Json -Depth 100)"
+$JsonObject = @{ "B" = "ValueB"; "C" = "ValueC"; "D" = "ValueD" }
+Append-JsonProperty -JsonObject $JsonObject -PropertyName "A" -propertyValue "ValueA"
+Write-Host "Updated JSON Object: $($JsonObject | ConvertTo-Json -Depth 100)"
 #>
 
 function Append-JsonProperty {
     param (
         [Parameter(Mandatory=$true)]
-        [object]$jsonObject,
+        [object]$JsonObject,
 
         [Parameter(Mandatory=$true)]
-        [string]$propertyName,
+        [string]$PropertyName,
 
         [Parameter(Mandatory=$true)]
         $propertyValue
     )
 
     # Check if the property already exists
-    if ($jsonObject.$propertyName) {
-        Write-Host "Property '$propertyName' already exists."
+    if ($JsonObject.$PropertyName) {
+        Write-Host "Property '$PropertyName' already exists."
         return $null
     }
 
     # Append the new property
-    $jsonObject | Add-Member -MemberType NoteProperty -Name $propertyName -Value $propertyValue
+    $JsonObject | Add-Member -MemberType NoteProperty -Name $PropertyName -Value $propertyValue
 }
 
 <#
@@ -260,22 +260,22 @@ The JSON object from which tokens will be selected. This parameter is mandatory.
 An array of string token names to be selected from the JSON object. This parameter is mandatory.
 
 .EXAMPLE
-$jsonObject = ConvertFrom-Json '{ "name": "John", "age": 30, "city": "New York"}'
+$JsonObject = ConvertFrom-Json '{ "name": "John", "age": 30, "city": "New York"}'
 $tokens = @("name", "city")
-$selectedObject = Select-JsonTokens -jsonObject $jsonObject -tokens $tokens
+$selectedObject = Select-JsonTokens -JsonObject $JsonObject -tokens $tokens
 Write-Host "Selected JSON Object: $($selectedObject | ConvertTo-Json -Depth 100)"
 #>
 function Select-JsonTokens {
     param (
         [Parameter(Mandatory=$true)]
-        [object]$jsonObject,
+        [object]$JsonObject,
 
         [Parameter(Mandatory=$true)]
         [string[]]$tokens
     )
 
     # Check if the input is a JSON object
-    if ($jsonObject -isnot [System.Management.Automation.PSCustomObject]) {
+    if ($JsonObject -isnot [System.Management.Automation.PSCustomObject]) {
         Write-Host "Error: Input is not a valid JSON object."
         return $null
     }
@@ -285,8 +285,8 @@ function Select-JsonTokens {
 
     # Iterate through each token and add corresponding elements to the new JSON object
     foreach ($token in $tokens) {
-        if ($jsonObject.PSObject.Properties.Name -contains $token) {
-            $selectedJson | Add-Member -MemberType NoteProperty -Name $token -Value $jsonObject.$token
+        if ($JsonObject.PSObject.Properties.Name -contains $token) {
+            $selectedJson | Add-Member -MemberType NoteProperty -Name $token -Value $JsonObject.$token
         }
     }
 
@@ -308,12 +308,12 @@ The JSON object in which to search for the property.
 The name of the property to search for in the JSON object.
 
 .EXAMPLE
-$jsonObject = ConvertFrom-Json '{
+$JsonObject = ConvertFrom-Json '{
     "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} },  
     "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }
 }'
-$propertyName = "email"
-$instances = Find-JsonPropertyInstances -jsonObject $jsonObject -propertyName $propertyName
+$PropertyName = "email"
+$instances = Find-JsonPropertyInstances -JsonObject $JsonObject -PropertyName $PropertyName
 Write-Host "Instances Found: $($instances | ConvertTo-Json -Depth 100)"
 #>
 
@@ -321,11 +321,11 @@ function Find-JsonPropertyInstances {
     param(
         [Parameter(Mandatory=$true)]
         [PSCustomObject]
-        $jsonObject,
+        $JsonObject,
 
         [Parameter(Mandatory=$true)]
         [string]
-        $propertyName
+        $PropertyName
     )
 
     $foundInstances = @()
@@ -339,7 +339,7 @@ function Find-JsonPropertyInstances {
         )
 
         foreach ($property in $obj.PSObject.Properties) {
-            if ($property.Name -eq $propertyName) {
+            if ($property.Name -eq $PropertyName) {
                 $found.Value += $obj
                 break
             } elseif ($property.Value -is [PSCustomObject]) {
@@ -348,8 +348,8 @@ function Find-JsonPropertyInstances {
         }
     }
 
-    foreach ($key in $jsonObject.PSObject.Properties.Name) {
-        $item = $jsonObject.$key
+    foreach ($key in $JsonObject.PSObject.Properties.Name) {
+        $item = $JsonObject.$key
         Search-Object -obj $item -found ([ref]$foundInstances)
     }
 

@@ -4,7 +4,7 @@ The `Json.ps1` file in the NoModulePowershell library provides a suite of functi
 
 ## List of Functions
 
-1. [Test-JsonString](#test-jsonstring)
+1. [Test-JsonString](#test-JsonString)
 2. [Test-JsonPropertyExists](#test-jsonpropertyexists)
 3. [Set-JsonProperty](#set-jsonproperty)
 4. [Get-JsonProperty](#get-jsonproperty)
@@ -24,7 +24,7 @@ This function checks if a provided string is a valid JSON object. It's useful fo
 | jsonString  | string | Yes       | '{"name": "John", "age": 30}' |
 
 ```powershell
-$isValid = Test-JsonString -jsonString $jsonString
+$isValid = Test-JsonString -JsonString $JsonString
 ```
 
 If `$isValid` is `true`, the string is a valid JSON object; if `false`, it is not.
@@ -43,9 +43,9 @@ Checks if a specified property exists in a JSON object. This function is useful 
 Usage:
 
 ```powershell
-$jsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
-$propertyName = "age"
-$exists = Test-JsonPropertyExists -jsonObject $jsonObject -propertyName $propertyName
+$JsonObject = ConvertFrom-Json '{"name": "John", "age": 30}'
+$PropertyName = "age"
+$exists = Test-JsonPropertyExists -JsonObject $JsonObject -PropertyName $PropertyName
 Write-Host "Property Exists: $exists"
 ```
 
@@ -62,7 +62,7 @@ Sets the value of a specified property in a JSON object. This function is useful
 | newValue    | object | Yes       | 31                        |
 
 ```powershell
-Set-JsonProperty -jsonObject $jsonObject -propertyName "age" -newValue 31
+Set-JsonProperty -JsonObject $JsonObject -PropertyName "age" -newValue 31
 ```
 
 ---
@@ -78,7 +78,7 @@ Retrieves the value of a specified property from a JSON object. This function is
 | defaultValue| *      | No        | 'undefined'               |
 
 ```powershell
-$propertyValue = Get-JsonProperty -jsonObject $jsonObject -propertyName "age"
+$propertyValue = Get-JsonProperty -JsonObject $JsonObject -PropertyName "age"
 ```
 
 ---
@@ -94,7 +94,7 @@ Adds a new property to a JSON object if it does not already exist. This function
 | propertyValue| object | Yes       | 30                        |
 
 ```powershell
-Add-JsonProperty -jsonObject $jsonObject -propertyName "age" -propertyValue 30
+Add-JsonProperty -JsonObject $JsonObject -PropertyName "age" -propertyValue 30
 ```
 
 ---
@@ -111,8 +111,8 @@ Appends a new property to a JSON object. The new property is added after the las
 Usage:
 
 ```powershell
-$jsonObject = @{ "B" = "ValueB"; "C" = "ValueC" }
-Append-JsonProperty -jsonObject $jsonObject -propertyName "D" -propertyValue "ValueD"
+$JsonObject = @{ "B" = "ValueB"; "C" = "ValueC" }
+Append-JsonProperty -JsonObject $JsonObject -PropertyName "D" -propertyValue "ValueD"
 ```
 
 ---
@@ -127,7 +127,7 @@ Selects specific elements from a JSON object based on a list of tokens. This fun
 | tokens     | string[] | Yes       | @('name', 'city')     |
 
 ```powershell
-$selectedJson = Select-JsonTokens -jsonObject $jsonObject -tokens @("name", "city")
+$selectedJson = Select-JsonTokens -JsonObject $JsonObject -tokens @("name", "city")
 ```
 
 ---
@@ -144,9 +144,9 @@ Searches through a JSON object and returns all instances (parents) where the spe
 Usage:
 
 ```powershell
-$jsonObject = ConvertFrom-Json '{ "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} }, "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }'
-$propertyName = "email"
-$instances = Find-JsonPropertyInstances -jsonObject $jsonObject -propertyName $propertyName
+$JsonObject = ConvertFrom-Json '{ "000001": { "name": "Luke", "age": "16", "contacts": {"email": "luke@email.com", "phone": "+39 1234567"} }, "000002": { "name": "Tom", "age": "16", "contacts": {"email": "tom@email.com", "phone": "+39 1234568" } }'
+$PropertyName = "email"
+$instances = Find-JsonPropertyInstances -JsonObject $JsonObject -PropertyName $PropertyName
 Write-Host "Instances Found: $($instances | ConvertTo-Json -Depth 100)"
 ```
 ---
